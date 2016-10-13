@@ -8,14 +8,14 @@ class FieldSpec extends Specification { def is = s2"""
   This is a specification for the Field class
 
   A Field should
-    1. have a right neighbour  $right
-    2. have a left neighbour   $left
-    3. have an upper neighbour $upper
-    4. have a lower neighbour  $lower
-    5. have an upper right neighbour $upperRight
-    6. have an upper left neighbour $upperLeft
-    7. have an lower right neighbour $lowerRight
-    8. have an lower left neighbour $lowerLeft
+    1. have a right neighbour           $right
+    2. have a left neighbour            $left
+    3. have an upper neighbour          $upper
+    4. have a lower neighbour           $lower
+    5. have an upper right neighbour    $upperRight
+    6. have an upper left neighbour     $upperLeft
+    7. have an lower right neighbour    $lowerRight
+    8. have an lower left neighbour     $lowerLeft
                             """
 
   def right = {
