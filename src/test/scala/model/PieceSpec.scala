@@ -5,9 +5,10 @@ import org.specs2._
 class PieceSpec extends Specification { def is = s2"""
 
   A Piece should
-    1. have a color       $color
-    2. know its allies    $allies
-    3. know its enemies   $enemies
+    1. have a color         $color
+    2. know its allies      $allies
+    3. know its enemies     $enemies
+    4. have a nice toString $pieceToString
                           """
 
   def color = {
@@ -25,6 +26,11 @@ class PieceSpec extends Specification { def is = s2"""
     val piece = King(Color.White)
     val enemy = King(Color.Black)
     piece.isEnemy(enemy) must_==true
+  }
+
+  def pieceToString = {
+    val piece = King(Color.White)
+    piece.toString === "White-King"
   }
 
 }
