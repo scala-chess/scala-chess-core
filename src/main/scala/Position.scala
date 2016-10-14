@@ -1,0 +1,1 @@
+object Position(x: Int, y: Int)
