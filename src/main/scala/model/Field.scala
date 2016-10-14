@@ -1,6 +1,6 @@
 package model
 
-case class Field(x: Int, y: Int) {
+case class Field(x: Int, y: Int, piece: Option[Piece] = None) {
 
   def getRightNeighbour = Field(x+1, y)
   def getLeftNeighbour = Field(x-1, y)
