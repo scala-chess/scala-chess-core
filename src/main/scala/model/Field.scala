@@ -11,7 +11,4 @@ case class Field(x: Int, y: Int) {
   def getUpperLeftNeighbour = getUpperNeighbour.getLeftNeighbour
   def getLowerLeftNeighbour = getLowerNeighbour.getLeftNeighbour
 
-  // create a (x, y) tuple from this
-  def unary_~ = Field.unapply(this).get
-
 }
