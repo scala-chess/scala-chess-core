@@ -1,5 +1,6 @@
 package model
 
+import model.pieces.King
 import org.specs2._
 
 class PieceSpec extends Specification { def is = s2"""
@@ -11,26 +12,9 @@ class PieceSpec extends Specification { def is = s2"""
     4. have a nice toString $pieceToString
                           """
 
-  def color = {
-    val piece = King(Color.White)
-    piece.color must_==Color.White
-  }
-
-  def allies = {
-    val piece = King(Color.White)
-    val ally = King(Color.White)
-    piece.isAlly(ally) must_==true
-  }
-
-  def enemies = {
-    val piece = King(Color.White)
-    val enemy = King(Color.Black)
-    piece.isEnemy(enemy) must_==true
-  }
-
-  def pieceToString = {
-    val piece = King(Color.White)
-    piece.toString === "White-King"
-  }
+  def color = King(Color.White).color must_==Color.White
+  def allies = King(Color.White).isAlly(King(Color.White)) must_==true
+  def enemies = King(Color.White).isEnemy(King(Color.Black)) must_==true
+  def pieceToString = King(Color.White).toString must_== "White-King"
 
 }
