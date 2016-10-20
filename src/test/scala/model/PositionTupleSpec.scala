@@ -7,9 +7,9 @@ class PositionTupleSpec extends Specification { def is = s2"""
 
   A PositionTuple should tell you its
     1. right neighbour   $right
-    2. left neighbour  $left
-    3. upper neighbour $up
-    4. lower neighbour $down
+    2. left neighbour    $left
+    3. upper neighbour   $up
+    4. lower neighbour   $down
                           """
 
   def right = (0, 0).right must_==(1, 0)
