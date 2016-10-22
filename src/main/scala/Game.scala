@@ -41,16 +41,7 @@ class Game {
                 list => list find {
                   m => m.target == to
                 } map {
-                  case move: Move =>
-                    val isAlly = (for {
-                      p1 <- piece
-                      p2 <- board.get(move.target)
-                    } yield p1.isAlly(p2)) getOrElse false
-
-                    isAlly match {
-                      case true => board
-                      case false => board.set(move.target, piece).set(move.origin, None)
-                    }
+                  case move: Move => board.set(move.target, piece).set(move.origin, None)
                   case other => board
                 }
               } getOrElse board
