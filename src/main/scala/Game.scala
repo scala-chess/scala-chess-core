@@ -1,6 +1,6 @@
 package model
 
-import model.pieces.{King, Knight,Rook}
+import model.pieces.{King, Knight, Rook, Bishop}
 
 import scala.collection.mutable
 
@@ -9,18 +9,18 @@ class Game {
   val tui = new TUI();
   val emptyBoard = new Board();
   val moves: mutable.MutableList[AMove] = new mutable.MutableList[AMove]
-  val setKing = Left((new King(Color.Black), (4, 4)))
-  val setKnight = Left((new Knight(Color.White), (5, 5)))
 
-
-
-  moves += setAction(King(Color.White), (4,0))
-  moves += setAction(King(Color.Black), (4,7))
-  moves += setAction(Knight(Color.White), (1,0))
-  moves += setAction(Knight(Color.White), (6,0))
-  moves += setAction(Knight(Color.Black), (1,7))
-  moves += setAction(Knight(Color.Black), (6,7))
+  moves += setAction(King(Color.Black), (4,0))
+  moves += setAction(King(Color.White), (4,7))
+  moves += setAction(Knight(Color.Black), (1,0))
+  moves += setAction(Knight(Color.Black), (6,0))
+  moves += setAction(Knight(Color.White), (1,7))
+  moves += setAction(Knight(Color.White), (6,7))
   moves += setAction(Rook(Color.Black), (0,0))
+  moves += setAction(Rook(Color.Black), (0,7))
+  moves += setAction(Rook(Color.White), (7,0))
+  moves += setAction(Rook(Color.White), (7,7))
+  moves += setAction(Bishop(Color.Black), (1,0))
 
 
   def setAction(piece: Piece, pos:(Int, Int)) =
