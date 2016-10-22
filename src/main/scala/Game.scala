@@ -11,8 +11,19 @@ class Game {
   val moves: mutable.MutableList[AMove] = new mutable.MutableList[AMove]
   val setKing = Left((new King(Color.Black), (4, 4)))
   val setKnight = Left((new Knight(Color.White), (5, 5)))
-  moves += setKing
-  moves += setKnight
+
+
+
+  moves += setAction(King(Color.White), (4,0))
+  moves += setAction(King(Color.Black), (4,7))
+  moves += setAction(Knight(Color.White), (1,0))
+  moves += setAction(Knight(Color.White), (6,0))
+  moves += setAction(Knight(Color.Black), (1,7))
+  moves += setAction(Knight(Color.Black), (6,7))
+
+
+  def setAction(piece: Piece, pos:(Int, Int)) =
+    Left((piece, pos))
 
   def run = {
     while (true) {
