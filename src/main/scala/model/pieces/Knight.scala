@@ -3,7 +3,7 @@ package model.pieces
 import model.{Color, Move, Piece, SimpleMove}
 import model.TupleUtils._
 
-class Knight(c: Color.Value) extends Piece(c) {
+case class Knight(c: Color.Value) extends Piece(c) {
 
   override def getMoves(field: (Int, Int)): Iterable[Move] = Seq(
     field.right.right.up,
