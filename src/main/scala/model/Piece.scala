@@ -6,5 +6,5 @@ abstract class Piece(val color: Color.Value) {
   def isWhite = !isBlack
   def isAlly(that: Piece) = this.color == that.color
   def isEnemy(that: Piece) = !isAlly(that)
-  def getMoves(field: (Int, Int)): Iterable[Action]
+  def getMoves(field: (Int, Int), board: Board): Iterable[Action]
 }

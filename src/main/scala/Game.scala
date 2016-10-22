@@ -36,7 +36,7 @@ class Game {
               val to = right._2
               val piece = board.get(from)
               piece map {
-                p => p.getMoves(from)
+                p => p.getMoves(from, board)
               } flatMap {
                 list => list find {
                   m => m.target == to

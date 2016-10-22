@@ -5,7 +5,7 @@ import model._
 
 case class King(c: Color.Value) extends Piece(c) {
 
-  override def getMoves(field: (Int, Int)): Iterable[Action] = Seq(
+  override def getMoves(field: (Int, Int), board: Board): Iterable[Action] = Seq(
     field.right,
     field.left,
     field.up,
