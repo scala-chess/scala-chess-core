@@ -23,18 +23,25 @@ class TUI {
 
         for(i <- 0 to 7){
             for(j <- 0 to 7){
-                board.get(i, j) match {
-                    case None => print ("|_")
+                val letter = board.get(i, j) match {
+                    case None => "_"
                     case Some(piece) => piece match {
-                        case King(_) => print("|K")
-                        case Knight(_) => print("|k")
+                        case King(_) => inColor(piece, "K")
+                        case Knight(_) => inColor(piece, "k")
                     }
                 }
+                print("|" + letter)
             }
             println("")
         }
 
         println("")
     }
+
+    def inColor(piece: Piece, letter: String): String =
+        piece.color match {
+            case Color.Black => Console.BLUE + letter + Console.BLACK
+            case Color.White => Console.RED + letter + Console.BLACK
+        }
 
 }

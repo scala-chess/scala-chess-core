@@ -1,11 +1,11 @@
 package model.pieces
 
-import model._
 import model.TupleUtils._
+import model._
 
 case class King(c: Color.Value) extends Piece(c) {
 
-  override def getMoves(field: (Int, Int)): Iterable[Move] = Seq(
+  override def getMoves(field: (Int, Int)): Iterable[Action] = Seq(
     field.right,
     field.left,
     field.up,
@@ -14,6 +14,6 @@ case class King(c: Color.Value) extends Piece(c) {
     field.up.right,
     field.down.left,
     field.down.right
-  ).map(SimpleMove(field, _))
+  ).map(Move(field, _))
 
 }

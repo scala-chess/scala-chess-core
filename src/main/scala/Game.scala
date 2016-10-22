@@ -10,7 +10,7 @@ class Game {
   val emptyBoard = new Board();
   val moves: mutable.MutableList[AMove] = new mutable.MutableList[AMove]
   val setKing = Left((new King(Color.Black), (4, 4)))
-  val setKnight = Left((new Knight(Color.Black), (5, 5)))
+  val setKnight = Left((new Knight(Color.White), (5, 5)))
   moves += setKing
   moves += setKnight
 
@@ -27,16 +27,20 @@ class Game {
               piece map {
                 p => p.getMoves(from)
               } flatMap {
-                list => list flatMap {
-                  case m: SimpleMove =>Some(m)
-                  case other => None
-                } find {
-                  m => m.to == to
+                list => list find {
+                  m => m.target == to
                 } map {
-                  m =>
-                    println(m)
-                    val b = board.set(m.to, piece)
-                    b.set(m.from, None)
+                  case move: Move =>
+                    val isAlly = (for {
+                      p1 <- piece
+                      p2 <- board.get(move.target)
+                    } yield p1.isAlly(p2)) getOrElse false
+
+                    isAlly match {
+                      case true => board
+                      case false => board.set(move.target, piece).set(move.origin, None)
+                    }
+                  case other => board
                 }
               } getOrElse board
           }
