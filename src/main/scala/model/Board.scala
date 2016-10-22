@@ -32,6 +32,6 @@ class Board {
         }
     
     def inMatrix(pos: (Int,Int)): Boolean =
-        0 <= pos._1 || pos._1 <= 7 || 0 <= pos._2 || pos._2 <= 7
+        0 <= pos._1 && pos._1 <= 7 && 0 <= pos._2 && pos._2 <= 7
 
 }
