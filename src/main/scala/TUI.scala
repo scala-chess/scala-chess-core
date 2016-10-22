@@ -1,6 +1,6 @@
 package model
 
-import model.pieces.{King, Knight}
+import model.pieces.{King, Knight, Rook}
 
 import scala.io.StdIn
 
@@ -28,6 +28,7 @@ class TUI {
                     case Some(piece) => piece match {
                         case King(_) => inColor(piece, "K")
                         case Knight(_) => inColor(piece, "k")
+                        case Rook(_) => inColor(piece, "R")
                     }
                 }
                 print("|" + letter)

@@ -1,6 +1,6 @@
 package model
 
-import model.pieces.{King, Knight}
+import model.pieces.{King, Knight,Rook}
 
 import scala.collection.mutable
 
@@ -20,6 +20,7 @@ class Game {
   moves += setAction(Knight(Color.White), (6,0))
   moves += setAction(Knight(Color.Black), (1,7))
   moves += setAction(Knight(Color.Black), (6,7))
+  moves += setAction(Rook(Color.Black), (0,0))
 
 
   def setAction(piece: Piece, pos:(Int, Int)) =
