@@ -23,7 +23,7 @@ class TUI {
 
         for(i <- 0 to 7){
             for(j <- 0 to 7){
-                val letter = board.get(i, j) match {
+                val letter = board.get(j, i) match {
                     case None => "_"
                     case Some(piece) => piece match {
                         case King(_) => inColor(piece, "K")
