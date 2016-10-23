@@ -63,9 +63,8 @@ class Game {
               } flatMap {
                 list => list find {
                   m => m.target == to
-                } map {
-                  case move: Move => piece map { p => p.handle(board, move)} getOrElse board
-                  case other => board
+                } flatMap {
+                  a => piece map { p => p.handle(board, a)}
                 }
               } getOrElse board
           }

@@ -25,9 +25,12 @@ case class Pawn(c: Color.Value, unmoved: Boolean) extends Piece(c) {
     toEmpty ++ toEmpty2 ++ toOccupated
   }
 
-  override def handle(board: Board, action: Action): Board = {
-    board.set(action.target, Some(Pawn(c, false))).set(action.origin, None)
-  }   
+  override def handle(board: Board, action: Action): Board = 
+    action match {
+      case move: Move => board.set(action.target, Some(Pawn(c, false))).set(action.origin, None)
+      case _ => super.handle(board, action)
+    }    
+
 }
 
 object Pawn {
