@@ -19,6 +19,9 @@ class Board {
             matrix(pos._1)(pos._2)
         }
 
+    //def getAll(): Iterable[Piece] =
+    //    matrix.flatten or something
+
     def set(pos: (Int, Int), piece: Option[Piece]):Board =
         if(inMatrix(pos)){
             val inner = this.matrix(pos._1)

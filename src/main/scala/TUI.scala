@@ -31,7 +31,7 @@ class TUI {
                         case Rook(_) => inColor(piece, "R")
                         case Bishop(_) => inColor(piece, "B")
                         case Queen(_) => inColor(piece, "Q")
-                        case Pawn(_) => inColor(piece, "P")
+                        case Pawn(_, _) => inColor(piece, "P")
                     }
                 }
                 print("|" + letter)
