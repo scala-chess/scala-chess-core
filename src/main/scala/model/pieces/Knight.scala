@@ -1,18 +1,24 @@
 package model.pieces
 
-import model.{Color, Move, Piece, SimpleMove}
+import model._
 import model.TupleUtils._
 
-class Knight(c: Color.Value) extends Piece(c) {
+case class Knight(c: Color.Value) extends Piece(c) {
 
-  override def getMoves(field: (Int, Int)): Iterable[Move] = Seq(
-    field.right.right.up,
-    field.right.right.down,
-    field.left.left.up,
-    field.left.left.down,
-    field.up.up.left,
-    field.up.up.right,
-    field.down.down.left,
-    field.down.down.right
-  ).map(SimpleMove(field, _))
+  override def getMoves(field: (Int, Int), board: Board): Iterable[Action] = 
+    Seq(
+      field.right.right.up,
+      field.right.right.down,
+      field.left.left.up,
+      field.left.left.down,
+      field.up.up.left,
+      field.up.up.right,
+      field.down.down.left,
+      field.down.down.right
+    ) filter { target => board.get(target) forall { !isAlly(_) }
+    } map { target => Move(field, target)}
+
+  override def handle(board: Board, action: Action): Board = {
+    board.set(action.target, Some(this)).set(action.origin, None)
+  }
 }

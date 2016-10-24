@@ -6,6 +6,11 @@ object TupleUtils {
     def left = (t._1-1, t._2)
     def up = (t._1, t._2-1)
     def down = (t._1, t._2+1)
+    def straight(piece: Piece) =
+      piece.color match {
+          case Color.Black => t.down
+          case Color.White => t.up
+      }
   }
 }
 
