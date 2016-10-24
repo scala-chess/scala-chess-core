@@ -17,7 +17,7 @@ abstract class Piece(val color: Color.Value) {
 
   def line(dir: Direction, board: Board, pos: (Int,Int), depth: Int): List[(Int,Int)] = {
     val target = dir(pos) 
-    if(depth > 8){
+    if(depth > board.matrix.size){
       List()
     } else {
       board.get(target) match {

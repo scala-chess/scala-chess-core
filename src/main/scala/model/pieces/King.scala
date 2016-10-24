@@ -15,6 +15,6 @@ case class King(c: Color.Value) extends Piece(c) {
       field.up.right,
       field.down.left,
       field.down.right
-    ) filter { target => board.get(target) map {p => !isAlly(p)} getOrElse true 
+    ) filter { target => board.get(target) forall { !isAlly(_) }
     } map { target => Move(field, target)}
 }

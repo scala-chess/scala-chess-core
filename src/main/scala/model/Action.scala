@@ -6,4 +6,3 @@ trait Action {
 }
 case class Move(origin: (Int, Int), target: (Int, Int)) extends Action
 case class CompositeAction(origin: (Int, Int), target: (Int, Int), actions: Action*) extends Action
-

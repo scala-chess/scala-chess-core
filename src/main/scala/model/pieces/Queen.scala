@@ -17,7 +17,7 @@ case class Queen(c: Color.Value) extends Piece(c) {
     ) flatMap {
       dir => line(dir, board, field, 0)
     } filter { 
-      target => board.get(target) map {p => !isAlly(p)} getOrElse true 
+      target => board.get(target) forall { !isAlly(_) }
     } map { 
       target => Move(field, target)
     } 
