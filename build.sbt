@@ -2,8 +2,11 @@ name := "scala-chess"
 
 version := "1.0"
 
-scalaVersion := "2.11.8"
+lazy val scalaChessApi = RootProject(uri("git://github.com/markusheilig/scala-chess-api.git#master"))
 
+lazy val `scala_chess_play` = (project in file(".")).dependsOn(scalaChessApi)
+
+scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq("org.specs2" %% "specs2-core" % "3.8.5" % "test")
 
