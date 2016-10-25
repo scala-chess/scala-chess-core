@@ -1,20 +1,24 @@
 package model.pieces
 
+import chess.api._
 import model.TupleUtils._
 import model._
 
-case class Bishop(c: Color.Value) extends Piece(c) {
-  override def getMoves(field: (Int, Int), board: Board): Iterable[Action] = 
+object Bishop {
+  implicit class BishopLogic(val bishop: Bishop) extends PieceLogic(bishop) {
+    override def getActions(field: (Int, Int), board: Board): Iterable[Action] =
     Seq(
       (t:(Int,Int)) => t.up.right,
       (t:(Int,Int)) => t.up.left,
       (t:(Int,Int)) => t.down.right,
       (t:(Int,Int)) => t.down.left
     ) flatMap {
-      dir => line(dir, board, field, 0)
+      dir => Pattern.line(dir, board, field)
     } filter { 
-      target => board.get(target) forall { !isAlly(_) }
+      target => board.get(target) forall { !bishop.isAlly(_) }
     } map { 
       target => Move(field, target)
     }
+  }
 }
+

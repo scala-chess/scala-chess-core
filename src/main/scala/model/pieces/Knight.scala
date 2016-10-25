@@ -2,10 +2,11 @@ package model.pieces
 
 import model._
 import model.TupleUtils._
+import chess.api._
 
-case class Knight(c: Color.Value) extends Piece(c) {
-
-  override def getMoves(field: (Int, Int), board: Board): Iterable[Action] = 
+object Knight {
+  implicit class KnightLogic(val knight: Knight) extends PieceLogic(knight) {
+    override def getActions(field: (Int, Int), board: Board): Iterable[Action] = 
     Seq(
       field.right.right.up,
       field.right.right.down,
@@ -17,4 +18,5 @@ case class Knight(c: Color.Value) extends Piece(c) {
       field.down.down.right
     ) filter { target => board.get(target) forall { !isAlly(_) }
     } map { target => Move(field, target)}
+  }
 }

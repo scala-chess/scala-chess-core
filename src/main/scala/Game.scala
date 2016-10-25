@@ -1,6 +1,7 @@
 
-import model.{Board, Color, Move, Piece}
-import model.pieces.{Bishop, King, Knight, Pawn, Queen, Rook}
+import chess.api._
+import model.PieceLogic
+import model.Board
 
 import scala.collection.mutable
 
@@ -20,7 +21,7 @@ class Game {
   moves += setAction(Rook(Color.Black), (7, 0))
   moves += setAction(Rook(Color.White), (0, 7))
   moves += setAction(Rook(Color.White), (7, 7))
-  //moves += setAction(Bishop(Color.Black), (2, 0))
+  moves += setAction(Bishop(Color.Black), (2, 0))
   //moves += setAction(Bishop(Color.Black), (5, 0))
   //moves += setAction(Bishop(Color.White), (2, 7))
   //moves += setAction(Bishop(Color.White), (5, 7))
@@ -58,7 +59,8 @@ class Game {
               val to = right._2
               val piece = board.get(from)
               piece map {
-                p => p.getMoves(from, board)
+                p => p
+                  .getActions(from, board)
               } flatMap {
                 list => list find {
                   m => m.target == to

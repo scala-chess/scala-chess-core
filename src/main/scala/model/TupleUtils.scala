@@ -1,5 +1,7 @@
 package model
 
+import chess.api._
+
 object TupleUtils {
   implicit class PositionTuple(val t: (Int, Int)) {
     def right = (t._1+1, t._2)

@@ -1,6 +1,7 @@
 package model
 
 import model.pieces.King
+import chess.api._
 
 case class Board(matrix: Vector[Vector[Option[Piece]]] = Board.defaultChessMatrix) {
   require(matrix.nonEmpty)
