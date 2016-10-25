@@ -25,12 +25,12 @@ class TUI {
         val letter = board.get(j, i) match {
           case None => "_"
           case Some(piece) => piece match {
-            case King(_) => inColor(piece, "K")
-            case Knight(_) => inColor(piece, "k")
-            case Rook(_) => inColor(piece, "R")
-            case Bishop(_) => inColor(piece, "B")
-            case Queen(_) => inColor(piece, "Q")
-            case Pawn(_, _) => inColor(piece, "P")
+            case k: King => inColor(k, "K")
+            case k: Knight => inColor(k, "k")
+            case r: Rook => inColor(r, "R")
+            case b: Bishop => inColor(b, "B")
+            case q: Queen => inColor(q, "Q")
+            case p: Pawn => inColor(p, "P")
           }
         }
         print("|" + letter)

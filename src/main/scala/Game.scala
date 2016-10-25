@@ -12,21 +12,21 @@ class Game {
 
   moves += setAction(King(Color.Black), (4, 0))
   moves += setAction(King(Color.White), (4, 7))
-  moves += setAction(Knight(Color.Black), (1, 0))
-  moves += setAction(Knight(Color.Black), (6, 0))
-  moves += setAction(Knight(Color.White), (1, 7))
-  moves += setAction(Knight(Color.White), (6, 7))
+  //moves += setAction(Knight(Color.Black), (1, 0))
+  //moves += setAction(Knight(Color.Black), (6, 0))
+  //moves += setAction(Knight(Color.White), (1, 7))
+  //moves += setAction(Knight(Color.White), (6, 7))
   moves += setAction(Rook(Color.Black), (0, 0))
   moves += setAction(Rook(Color.Black), (7, 0))
   moves += setAction(Rook(Color.White), (0, 7))
   moves += setAction(Rook(Color.White), (7, 7))
-  moves += setAction(Bishop(Color.Black), (2, 0))
-  moves += setAction(Bishop(Color.Black), (5, 0))
-  moves += setAction(Bishop(Color.White), (2, 7))
-  moves += setAction(Bishop(Color.White), (5, 7))
-  moves += setAction(Queen(Color.Black), (3, 0))
+  //moves += setAction(Bishop(Color.Black), (2, 0))
+  //moves += setAction(Bishop(Color.Black), (5, 0))
+  //moves += setAction(Bishop(Color.White), (2, 7))
+  //moves += setAction(Bishop(Color.White), (5, 7))
+  //moves += setAction(Queen(Color.Black), (3, 0))
   moves += setAction(Queen(Color.White), (3, 7))
-  moves += setAction(Pawn(Color.Black), (0, 1))
+  /*moves += setAction(Pawn(Color.Black), (0, 1))
   moves += setAction(Pawn(Color.Black), (1, 1))
   moves += setAction(Pawn(Color.Black), (2, 1))
   moves += setAction(Pawn(Color.Black), (3, 1))
@@ -41,7 +41,7 @@ class Game {
   moves += setAction(Pawn(Color.White), (4, 6))
   moves += setAction(Pawn(Color.White), (5, 6))
   moves += setAction(Pawn(Color.White), (6, 6))
-  moves += setAction(Pawn(Color.White), (7, 6))
+  moves += setAction(Pawn(Color.White), (7, 6))*/
 
 
   def setAction(piece: Piece, pos: (Int, Int)) =
@@ -62,9 +62,8 @@ class Game {
               } flatMap {
                 list => list find {
                   m => m.target == to
-                } map {
-                  case move: Move => piece map { p => p.handle(board, move) } getOrElse board
-                  case other => board
+                } flatMap {
+                  action => piece map { p => p.handle(board, action) }
                 }
               } getOrElse board
           }
