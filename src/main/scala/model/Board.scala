@@ -12,7 +12,7 @@ case class Board(matrix: Vector[Vector[Option[Piece]]] = Board.defaultChessMatri
   def getAll: Iterable[((Int, Int), Piece)] = {
     matrix.zipWithIndex flatMap {
       case (vector, indexX) =>
-        vector.zipWithIndex map {
+        vector.zipWithIndex collect {
           case (Some(piece), indexY) => ((indexX, indexY), piece)
         }
     }
