@@ -29,9 +29,10 @@ case class King(c: Color.Value, unmoved: Boolean) extends Piece(c) {
     val castle = rookPositions map {
       rookPosition => (rookPosition, directionFromXDiff(field, rookPosition))
     } filter {
-      t =>        
+      t =>
         val rookPosition = t._1
-        betweenX(field, rookPosition) flatMap { f => board.get(f) }.isEmpty
+        val piecesBetween = betweenX(field, rookPosition) flatMap { f => board.get(f) }
+        piecesBetween.isEmpty
     } map {
       t =>        
         val rookPosition = t._1
