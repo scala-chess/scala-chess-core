@@ -8,7 +8,12 @@ abstract class Piece(val color: Color.Value) {
   def isAlly(that: Piece) = this.color == that.color
   def isEnemy(that: Piece) = !isAlly(that)
   def getMoves(field: (Int, Int), board: Board): Iterable[Action]
-  def handle(board: Board, action: Action): Board
+  
+  def handle(board: Board, action: Action): Board =
+    action match {
+      case move: Move => board.set(action.target, Some(this)).set(action.origin, None)
+      case other => board
+    }
 
   def line(dir: Direction, board: Board, pos: (Int,Int), depth: Int): List[(Int,Int)] = {
     val target = dir(pos) 

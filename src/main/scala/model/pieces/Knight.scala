@@ -17,8 +17,4 @@ case class Knight(c: Color.Value) extends Piece(c) {
       field.down.down.right
     ) filter { target => board.get(target) forall { !isAlly(_) }
     } map { target => Move(field, target)}
-
-  override def handle(board: Board, action: Action): Board = {
-    board.set(action.target, Some(this)).set(action.origin, None)
-  }
 }
