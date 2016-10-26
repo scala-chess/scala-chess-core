@@ -3,6 +3,7 @@ package model.pieces
 import model.TupleUtils._
 import model._
 import chess.api._
+import model.Piece._
 
 object Rook {
   implicit class RookLogic(val rook: Rook) extends PieceLogic(rook) {
@@ -15,7 +16,7 @@ object Rook {
     ) flatMap {
       dir => Pattern.line(dir, board, field)
     } filter { 
-      target => board.get(target) forall { !isAlly(_) }
+      target => board.get(target) forall { !rook.isAlly(_) }
     } map { 
       target => Move(field, target)
     }

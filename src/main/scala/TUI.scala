@@ -1,8 +1,9 @@
 
-import model.{Board, Color, Piece}
+import model.{Board}
 import model.pieces.{Bishop, King, Knight, Pawn, Queen, Rook}
 
 import scala.io.StdIn
+import chess.api._
 
 class TUI {
 

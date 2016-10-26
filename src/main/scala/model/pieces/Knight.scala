@@ -3,6 +3,7 @@ package model.pieces
 import model._
 import model.TupleUtils._
 import chess.api._
+import model.Piece._
 
 object Knight {
   implicit class KnightLogic(val knight: Knight) extends PieceLogic(knight) {
@@ -16,7 +17,7 @@ object Knight {
       field.up.up.right,
       field.down.down.left,
       field.down.down.right
-    ) filter { target => board.get(target) forall { !isAlly(_) }
+    ) filter { target => board.get(target) forall { !knight.isAlly(_) }
     } map { target => Move(field, target)}
   }
 }

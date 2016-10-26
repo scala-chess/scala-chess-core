@@ -1,6 +1,7 @@
 
 import chess.api._
-import model.PieceLogic
+import model.pieces._
+import model.Piece._
 import model.Board
 
 import scala.collection.mutable
@@ -11,38 +12,38 @@ class Game {
   val emptyBoard = new Board()
   val moves: mutable.MutableList[AMove] = new mutable.MutableList[AMove]
 
-  moves += setAction(King(Color.Black), (4, 0))
-  moves += setAction(King(Color.White), (4, 7))
-  //moves += setAction(Knight(Color.Black), (1, 0))
-  //moves += setAction(Knight(Color.Black), (6, 0))
-  //moves += setAction(Knight(Color.White), (1, 7))
-  //moves += setAction(Knight(Color.White), (6, 7))
-  moves += setAction(Rook(Color.Black), (0, 0))
-  moves += setAction(Rook(Color.Black), (7, 0))
-  moves += setAction(Rook(Color.White), (0, 7))
-  moves += setAction(Rook(Color.White), (7, 7))
-  moves += setAction(Bishop(Color.Black), (2, 0))
-  //moves += setAction(Bishop(Color.Black), (5, 0))
-  //moves += setAction(Bishop(Color.White), (2, 7))
-  //moves += setAction(Bishop(Color.White), (5, 7))
-  //moves += setAction(Queen(Color.Black), (3, 0))
-  moves += setAction(Queen(Color.White), (3, 7))
-  /*moves += setAction(Pawn(Color.Black), (0, 1))
-  moves += setAction(Pawn(Color.Black), (1, 1))
-  moves += setAction(Pawn(Color.Black), (2, 1))
-  moves += setAction(Pawn(Color.Black), (3, 1))
-  moves += setAction(Pawn(Color.Black), (4, 1))
-  moves += setAction(Pawn(Color.Black), (5, 1))
-  moves += setAction(Pawn(Color.Black), (6, 1))
-  moves += setAction(Pawn(Color.Black), (7, 1))
-  moves += setAction(Pawn(Color.White), (0, 6))
-  moves += setAction(Pawn(Color.White), (1, 6))
-  moves += setAction(Pawn(Color.White), (2, 6))
-  moves += setAction(Pawn(Color.White), (3, 6))
-  moves += setAction(Pawn(Color.White), (4, 6))
-  moves += setAction(Pawn(Color.White), (5, 6))
-  moves += setAction(Pawn(Color.White), (6, 6))
-  moves += setAction(Pawn(Color.White), (7, 6))*/
+  moves += setAction(chess.api.King(Color.Black), (4, 0))
+  moves += setAction(chess.api.King(Color.White), (4, 7))
+  moves += setAction(chess.api.Knight(Color.Black), (1, 0))
+  moves += setAction(chess.api.Knight(Color.Black), (6, 0))
+  moves += setAction(chess.api.Knight(Color.White), (1, 7))
+  moves += setAction(chess.api.Knight(Color.White), (6, 7))
+  moves += setAction(chess.api.Rook(Color.Black), (0, 0))
+  moves += setAction(chess.api.Rook(Color.Black), (7, 0))
+  moves += setAction(chess.api.Rook(Color.White), (0, 7))
+  moves += setAction(chess.api.Rook(Color.White), (7, 7))
+  moves += setAction(chess.api.Bishop(Color.Black), (2, 0))
+  moves += setAction(chess.api.Bishop(Color.Black), (5, 0))
+  moves += setAction(chess.api.Bishop(Color.White), (2, 7))
+  moves += setAction(chess.api.Bishop(Color.White), (5, 7))
+  moves += setAction(chess.api.Queen(Color.Black), (3, 0))
+  moves += setAction(chess.api.Queen(Color.White), (3, 7))
+  moves += setAction(chess.api.Pawn(Color.Black), (0, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (1, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (2, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (3, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (4, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (5, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (6, 1))
+  moves += setAction(chess.api.Pawn(Color.Black), (7, 1))
+  moves += setAction(chess.api.Pawn(Color.White), (0, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (1, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (2, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (3, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (4, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (5, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (6, 6))
+  moves += setAction(chess.api.Pawn(Color.White), (7, 6))
 
 
   def setAction(piece: Piece, pos: (Int, Int)) =
@@ -59,8 +60,7 @@ class Game {
               val to = right._2
               val piece = board.get(from)
               piece map {
-                p => p
-                  .getActions(from, board)
+                p => p.getActions(from, board)
               } flatMap {
                 list => list find {
                   m => m.target == to

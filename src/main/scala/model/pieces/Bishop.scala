@@ -3,6 +3,7 @@ package model.pieces
 import chess.api._
 import model.TupleUtils._
 import model._
+import model.Piece._
 
 object Bishop {
   implicit class BishopLogic(val bishop: Bishop) extends PieceLogic(bishop) {

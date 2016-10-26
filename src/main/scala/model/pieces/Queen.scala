@@ -3,6 +3,7 @@ package model.pieces
 import model.TupleUtils._
 import model._
 import chess.api._
+import model.Piece._
 
 object Queen {
   implicit class QueenLogic(val queen: Queen) extends PieceLogic(queen) {
@@ -19,7 +20,7 @@ object Queen {
     ) flatMap {
       dir => Pattern.line(dir, board, field)
     } filter { 
-      target => board.get(target) forall { !isAlly(_) }
+      target => board.get(target) forall { !queen.isAlly(_) }
     } map { 
       target => Move(field, target)
     }

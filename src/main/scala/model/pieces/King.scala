@@ -2,6 +2,7 @@ package model.pieces
 
 import model.TupleUtils._
 import model._
+import model.Piece._
 import chess.api._
 
 object King {
@@ -16,12 +17,12 @@ object King {
         field.up.right,
         field.down.left,
         field.down.right
-      ) filter { target => board.get(target) forall { !isAlly(_) }
+      ) filter { target => board.get(target) forall { !king.isAlly(_) }
       } map { target => Move(field, target)}
       val unmoved = true
       val rookPositions = unmoved match {
         case true => board.getAll flatMap {
-            case ((x,y),Rook(color)) if color == king.color && unmoved == true && y == field._2 => Some((x,y))
+            case ((x,y),chess.api.Rook(color)) if color == king.color && unmoved == true && y == field._2 => Some((x,y))
             case _ => None
           }
         case false => Iterable()
