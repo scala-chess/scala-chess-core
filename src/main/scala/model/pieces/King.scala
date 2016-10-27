@@ -2,10 +2,12 @@ package model.pieces
 
 import model.TupleUtils._
 import model._
-import model.Piece._
 import chess.api._
 
 object King {
+
+  def apply(color: Color.Value) = new King(color, Id.next)
+
   implicit class KingLogic(val king: King) extends PieceLogic(king) {
     override def getActions(field: (Int, Int), board: Board): Iterable[Action] = {
       val move = Seq(
@@ -18,11 +20,12 @@ object King {
         field.down.left,
         field.down.right
       ) filter { target => board.get(target) forall { !king.isAlly(_) }
-      } map { target => Move(field, target)}
+      } map { target => Move(king.id, field, target)}
+
       val unmoved = true
       val rookPositions = unmoved match {
         case true => board.getAll flatMap {
-            case ((x,y),chess.api.Rook(color)) if color == king.color && unmoved == true && y == field._2 => Some((x,y))
+            case ((x,y),chess.api.Rook(color, _)) if color == king.color && unmoved == true && y == field._2 => Some((x,y))
             case _ => None
           }
         case false => Iterable()
@@ -39,7 +42,7 @@ object King {
         t =>
           val rookPosition = t._1
           val dir = t._2
-          Castle(field, rookPosition, dir(dir(field)), dir(field))
+          Castle(king.id, field, rookPosition, dir(dir(field)), dir(field))
       }
 
       move ++ castle
@@ -74,6 +77,5 @@ object King {
           optionBoard getOrElse board
         case _ => super.handle(board, action)
       }
-
   }
 }

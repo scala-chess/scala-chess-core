@@ -1,7 +1,5 @@
 
 import model.{Board}
-import model.pieces.{Bishop, King, Knight, Pawn, Queen, Rook}
-
 import scala.io.StdIn
 import chess.api._
 

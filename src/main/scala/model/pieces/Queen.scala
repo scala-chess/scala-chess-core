@@ -3,10 +3,13 @@ package model.pieces
 import model.TupleUtils._
 import model._
 import chess.api._
-import model.Piece._
 
 object Queen {
-  implicit class QueenLogic(val queen: Queen) extends PieceLogic(queen) {
+
+  def apply(color: Color.Value) = new Queen(color, Id.next)
+
+  implicit class QueenLogic(val queen: Queen) extends PieceLogic(queen) {  
+
     override def getActions(field: (Int, Int), board: Board): Iterable[Action] =
     Seq(
       (t:(Int,Int)) => t.up.right,
@@ -22,7 +25,7 @@ object Queen {
     } filter { 
       target => board.get(target) forall { !queen.isAlly(_) }
     } map { 
-      target => Move(field, target)
+      target => Move(queen.id, field, target)
     }
   }
 }

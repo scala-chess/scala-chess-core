@@ -34,5 +34,5 @@ object Board {
 
   def defaultChessMatrix = Vector.fill(defaultMatrixSize)(Vector.fill(defaultMatrixSize)(None))
 
-  def kingGamefield = Vector(Vector(Some(King(Color.Black)), None, Some(King(Color.White))))
+  def kingGamefield = Vector(Vector(Some(King(Color.Black, 0)), None, Some(King(Color.White, 1))))
 }
