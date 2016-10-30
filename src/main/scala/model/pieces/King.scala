@@ -1,15 +1,15 @@
 package model.pieces
 
+import chess.api._
 import model.TupleUtils._
 import model._
-import chess.api._
 
 object King {
 
   def apply(color: Color.Value) = new King(color, Id.next)
 
   implicit class KingLogic(val king: King) extends PieceLogic(king) {
-    override def getActions(field: (Int, Int), board: Board): Iterable[Action] = {
+    override def getActions(field: (Int, Int), board: Board, history: Iterable[Action]): Iterable[Action] = {
       val move = Seq(
         field.right,
         field.left,
@@ -19,15 +19,16 @@ object King {
         field.up.right,
         field.down.left,
         field.down.right
-      ) filter { target => board.get(target) forall { !king.isAlly(_) }
-      } map { target => Move(king.id, field, target)}
+      ) filter { target => board.get(target) forall {
+        !king.isAlly(_)
+      }
+      } map { target => Move(king.id, field, target) }
 
-      val unmoved = true
-      val rookPositions = unmoved match {
+      val rookPositions = History.unmoved(history, king) match {
         case true => board.getAll flatMap {
-            case ((x,y),chess.api.Rook(color, _)) if color == king.color && unmoved == true && y == field._2 => Some((x,y))
-            case _ => None
-          }
+          case ((x, y), rook@chess.api.Rook(color, _)) if color == king.color && History.unmoved(history, rook) && y == field._2 => Some((x, y))
+          case _ => None
+        }
         case false => Iterable()
       }
 
@@ -48,18 +49,18 @@ object King {
       move ++ castle
     }
 
-    def directionFromXDiff(from: (Int,Int), to: (Int,Int)): ((Int,Int)) => (Int,Int) =
+    def directionFromXDiff(from: (Int, Int), to: (Int, Int)): ((Int, Int)) => (Int, Int) =
       from._1 match {
-          case x if x > to._1 => (t:(Int,Int)) => t.left
-          case x if x < to._1 => (t:(Int,Int)) => t.right
-          case _ => (t:(Int,Int)) => t
+        case x if x > to._1 => (t: (Int, Int)) => t.left
+        case x if x < to._1 => (t: (Int, Int)) => t.right
+        case _ => (t: (Int, Int)) => t
       }
 
-    def betweenX(start: (Int,Int), end: (Int,Int)): List[(Int,Int)] = {
+    def betweenX(start: (Int, Int), end: (Int, Int)): List[(Int, Int)] = {
       val dir = directionFromXDiff(start, end)
       start._1 match {
-          case x if x == end._1 || dir(start)._1 == end._1 => List()
-          case x => dir(start) :: betweenX(dir(start), end)
+        case x if x == end._1 || dir(start)._1 == end._1 => List()
+        case x => dir(start) :: betweenX(dir(start), end)
       }
     }
 
@@ -67,15 +68,16 @@ object King {
       action match {
         case castle: Castle =>
           val optionBoard = for {
-            king <- board.get(castle.origin) collect {case king: King => king }
-            rook <- board.get(castle.target) collect {case rook: Rook => rook }
+            king <- board.get(castle.origin) collect { case king: King => king }
+            rook <- board.get(castle.target) collect { case rook: Rook => rook }
           } yield board
-                    .set(castle.targetKing, Some(king))
-                    .set(castle.targetRook, Some(rook))
-                    .set(castle.target, None)
-                    .set(castle.origin, None)
+            .set(castle.targetKing, Some(king))
+            .set(castle.targetRook, Some(rook))
+            .set(castle.target, None)
+            .set(castle.origin, None)
           optionBoard getOrElse board
         case _ => super.handle(board, action)
       }
   }
+
 }

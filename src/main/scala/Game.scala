@@ -1,78 +1,66 @@
 
 import chess.api._
-import model.pieces._
-import model.PieceLogic._
-import model.Board
-import model._
+import model.{Board, _}
 
 import scala.collection.mutable
 
 class Game {
   type AMove = Either[(Piece, (Int, Int)), ((Int, Int), (Int, Int))]
-  val tui = new TUI()
-  val emptyBoard = new Board()
-  val moves: mutable.MutableList[AMove] = new mutable.MutableList[AMove]
+  val tui = new TUI(this)
+  val actions: mutable.MutableList[Action] = new mutable.MutableList[Action]
+  val initialBoard = new Board().set((4, 0), Some(model.pieces.King(Color.Black)))
+    .set((4, 7), Some(model.pieces.King(Color.White)))
+    .set((1, 0), Some(model.pieces.Knight(Color.Black)))
+    .set((6, 0), Some(model.pieces.Knight(Color.Black)))
+    .set((1, 7), Some(model.pieces.Knight(Color.White)))
+    .set((6, 7), Some(model.pieces.Knight(Color.White)))
+    .set((0, 0), Some(model.pieces.Rook(Color.Black)))
+    .set((7, 0), Some(model.pieces.Rook(Color.Black)))
+    .set((0, 7), Some(model.pieces.Rook(Color.White)))
+    .set((7, 7), Some(model.pieces.Rook(Color.White)))
+    .set((2, 0), Some(model.pieces.Bishop(Color.Black)))
+    .set((5, 0), Some(model.pieces.Bishop(Color.Black)))
+    .set((2, 7), Some(model.pieces.Bishop(Color.White)))
+    .set((5, 7), Some(model.pieces.Bishop(Color.White)))
+    .set((3, 0), Some(model.pieces.Queen(Color.Black)))
+    .set((3, 7), Some(model.pieces.Queen(Color.White)))
+    .set((0, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((1, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((2, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((3, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((4, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((5, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((6, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((7, 1), Some(model.pieces.Pawn(Color.Black)))
+    .set((0, 6), Some(model.pieces.Pawn(Color.White)))
+    .set((1, 6), Some(model.pieces.Pawn(Color.Black)))
+    .set((2, 6), Some(model.pieces.Pawn(Color.White)))
+    .set((3, 6), Some(model.pieces.Pawn(Color.White)))
+    .set((4, 6), Some(model.pieces.Pawn(Color.White)))
+    .set((5, 6), Some(model.pieces.Pawn(Color.White)))
+    .set((6, 6), Some(model.pieces.Pawn(Color.White)))
+    .set((7, 6), Some(model.pieces.Pawn(Color.White)))
 
-  moves += setAction(model.pieces.King(Color.Black), (4, 0))
-  moves += setAction(model.pieces.King(Color.White), (4, 7))
-  moves += setAction(model.pieces.Knight(Color.Black), (1, 0))
-  moves += setAction(model.pieces.Knight(Color.Black), (6, 0))
-  moves += setAction(model.pieces.Knight(Color.White), (1, 7))
-  moves += setAction(model.pieces.Knight(Color.White), (6, 7))
-  moves += setAction(model.pieces.Rook(Color.Black), (0, 0))
-  moves += setAction(model.pieces.Rook(Color.Black), (7, 0))
-  moves += setAction(model.pieces.Rook(Color.White), (0, 7))
-  moves += setAction(model.pieces.Rook(Color.White), (7, 7))
-  moves += setAction(model.pieces.Bishop(Color.Black), (2, 0))
-  moves += setAction(model.pieces.Bishop(Color.Black), (5, 0))
-  moves += setAction(model.pieces.Bishop(Color.White), (2, 7))
-  moves += setAction(model.pieces.Bishop(Color.White), (5, 7))
-  moves += setAction(model.pieces.Queen(Color.Black), (3, 0))
-  moves += setAction(model.pieces.Queen(Color.White), (3, 7))
-  moves += setAction(model.pieces.Pawn(Color.Black), (0, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (1, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (2, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (3, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (4, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (5, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (6, 1))
-  moves += setAction(model.pieces.Pawn(Color.Black), (7, 1))
-  moves += setAction(model.pieces.Pawn(Color.White), (0, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (1, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (2, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (3, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (4, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (5, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (6, 6))
-  moves += setAction(model.pieces.Pawn(Color.White), (7, 6))
-
-
-  def setAction(piece: Piece, pos: (Int, Int)) =
-    Left((piece, pos))
-
-  def run = {
-    while (true) {
-      val board = moves.foldLeft(emptyBoard) {
-        (board, move) =>
-          move match {
-            case Left(left) => board.set(left._2, Some(left._1))
-            case Right(right) =>
-              val from = right._1
-              val to = right._2
-              val piece = board.get(from) map { PieceLogic(_) }
-              piece map {
-                p => p.getActions(from, board)
-              } flatMap {
-                list => list find {
-                  m => m.target == to
-                } flatMap {
-                  action => piece map { p => p.handle(board, action) }
-                }
-              } getOrElse board
-          }
+  def getValidActions(board: Board, origin: (Int, Int)): Iterable[Action] = {
+    board.get(origin) map {
+      PieceLogic(_).getActions(origin, board, actions) filter {
+        a => board.isOnBoard(a.target)
       }
-      val newMove = tui.update(board)
-      moves += Right(newMove)
+    } getOrElse Iterable()
+  }
+
+  def run() = {
+    while (true) {
+      val board = actions.foldLeft(initialBoard) {
+        (board, action) =>
+          board.get(action.origin) map {
+            PieceLogic(_)
+          } map {
+            p => p.handle(board, action)
+          } getOrElse board
+      }
+      val newAction = tui.update(board)
+      actions += newAction
     }
   }
 }

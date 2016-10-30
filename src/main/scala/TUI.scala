@@ -3,16 +3,31 @@ import model.{Board}
 import scala.io.StdIn
 import chess.api._
 
-class TUI {
+class TUI(game: Game) {
 
-  def update(board: Board): ((Int, Int), (Int, Int)) = {
+  def update(board: Board): Action = {
     printBoard(board)
-    val xStart = StdIn.readInt()
-    val yStart = StdIn.readInt()
-    val xEnd = StdIn.readInt()
-    val yEnd = StdIn.readInt()
-    ((xStart, yStart), (xEnd, yEnd))
+    var validActions: Iterable[Action] = Iterable()
+    var selectedIndex = -1
+    while (!validActions.toIndexedSeq.indices.contains(selectedIndex)) {
+      validActions = Iterable()
+      while (validActions.isEmpty) {
+        println("Select Unit:")
+        print("x: ")
+        val xStart = StdIn.readInt()
+        print("y: ")
+        val yStart = StdIn.readInt()
+        validActions = game.getValidActions(board, (xStart, yStart))
+      }
+      println("Choose Action:")
+      validActions.zipWithIndex.foreach {
+        case (action: Choice, index) => println(index.toString + ": " + action.getClass.getSimpleName + " to " + action.target + " - " + action.choice.getClass.getSimpleName)
+        case (action, index) => println(index.toString + ": " + action.getClass.getSimpleName + " to " + action.target)
+      }
+      selectedIndex = StdIn.readInt()
+    }
 
+    validActions.toIndexedSeq(selectedIndex)
   }
 
   def printBoard(board: Board) = {

@@ -18,6 +18,9 @@ case class Board(matrix: Vector[Vector[Option[Piece]]] = Board.defaultChessMatri
     }
   }
 
+  def isOnBoard(pos: (Int, Int)): Boolean =
+    matrix.indices.contains(pos._1) && matrix(0).indices.contains(pos._2)
+
   def set(pos: (Int, Int), piece: Option[Piece]): Board = {
     matrix.lift(pos._1) flatMap {
       _.lift(pos._2)
