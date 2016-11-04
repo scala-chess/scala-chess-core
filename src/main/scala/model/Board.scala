@@ -35,6 +35,8 @@ object Board {
   // 8x8
   val defaultMatrixSize = 8
 
+  def empty(int: Size = defaultMatrixSize) = Vector.fill(defaultMatrixSize)(Vector.fill(defaultMatrixSize)(None)) 
+
   def defaultChessMatrix = Vector.fill(defaultMatrixSize)(Vector.fill(defaultMatrixSize)(None))
 
   def kingGamefield = Vector(Vector(Some(King(Color.Black, 0)), None, Some(King(Color.White, 1))))

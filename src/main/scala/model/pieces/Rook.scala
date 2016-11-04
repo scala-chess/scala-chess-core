@@ -21,6 +21,8 @@ object Rook {
         target => board.get(target) forall {
           !rook.isAlly(_)
         }
+      } filter {
+        board.isOnBoard(_.target)
       } map {
         target => Move(rook.id, field, target)
       }
