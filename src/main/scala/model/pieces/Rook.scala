@@ -22,7 +22,7 @@ object Rook {
           !rook.isAlly(_)
         }
       } filter {
-        board.isOnBoard(_.target)
+        board.isOnBoard(_)
       } map {
         target => Move(rook.id, field, target)
       }

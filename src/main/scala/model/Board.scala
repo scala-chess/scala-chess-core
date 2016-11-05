@@ -35,7 +35,7 @@ object Board {
   // 8x8
   val defaultMatrixSize = 8
 
-  def empty(int: Size = defaultMatrixSize) = Vector.fill(defaultMatrixSize)(Vector.fill(defaultMatrixSize)(None)) 
+  def empty(size: Int = defaultMatrixSize) = Vector.fill(size)(Vector.fill(size)(None))
 
   def defaultChessMatrix = Vector.fill(defaultMatrixSize)(Vector.fill(defaultMatrixSize)(None))
 

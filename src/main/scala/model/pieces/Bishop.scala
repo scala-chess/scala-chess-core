@@ -6,6 +6,8 @@ import model._
 
 object Bishop {
 
+  def apply(color: Color.Value) = new Bishop(color, Id.next)
+
   implicit class BishopLogic(val bishop: Bishop) extends PieceLogic(bishop) {
     override def getActions(field: (Int, Int), board: Board, history: Iterable[Action]): Iterable[Action] =
       Seq(
@@ -24,6 +26,5 @@ object Bishop {
       }
   }
 
-  def apply(color: Color.Value) = new Bishop(color, Id.next)
 }
 
