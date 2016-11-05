@@ -29,7 +29,7 @@ object ChessBoard {
     .set((6, 1), Some(Pawn(Color.Black)))
     .set((7, 1), Some(Pawn(Color.Black)))
     .set((0, 6), Some(Pawn(Color.White)))
-    .set((1, 6), Some(Pawn(Color.Black)))
+    .set((1, 6), Some(Pawn(Color.White)))
     .set((2, 6), Some(Pawn(Color.White)))
     .set((3, 6), Some(Pawn(Color.White)))
     .set((4, 6), Some(Pawn(Color.White)))
