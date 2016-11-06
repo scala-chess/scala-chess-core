@@ -1,18 +1,19 @@
 import akka.actor.{ActorSystem, Props}
+import com.typesafe.config.ConfigFactory
 
 object Chess {
+
   def main(args: Array[String]): Unit = {
-    val actorSystem = ActorSystem.create("chess")
-    val chessController = actorSystem.actorOf(Props[ControllerActor], "controller")
-    println(chessController)
-
-    val game = new Game()
-    game.run
+    val (actorSystemName, actorName) = getActorSystemConfig
+    val actorSystem = ActorSystem.create(actorSystemName)
+    val chessController = actorSystem.actorOf(Props[ControllerActor], actorName)
   }
 
-  def setupControllerActor(): Unit = {
-    val actorSystem = ActorSystem.create("chess")
-    val chessController = actorSystem.actorOf(Props[ControllerActor], "controller")
-    println(chessController)
+  def getActorSystemConfig = {
+    val config = ConfigFactory.load()
+    val actorSystemName = config.getString("akka.chess.systemName")
+    val actorName = config.getString("akka.chess.actorName")
+    (actorSystemName, actorName)
   }
+
 }
