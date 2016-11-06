@@ -2,7 +2,10 @@ import akka.actor.{ActorSystem, Props}
 
 object Chess {
   def main(args: Array[String]): Unit = {
-    setupControllerActor()
+    val actorSystem = ActorSystem.create("chess")
+    val chessController = actorSystem.actorOf(Props[ControllerActor], "controller")
+    println(chessController)
+
     val game = new Game()
     game.run
   }
