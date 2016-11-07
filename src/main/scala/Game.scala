@@ -30,7 +30,7 @@ class Game {
     val board = fold
     val dimX = board.matrix.length
     val dimY = board.matrix(0).length
-    chess.api.ChessBoard(dimX, dimY, board.getAll.toMap)
+    chess.api.ChessBoard(dimX, dimY, board.getAll)
   }
 
   def fold: Board = {
