@@ -11,7 +11,7 @@ class RookSpec extends Specification {
 
   A Piece should
     1. should move to empty fields in horizontal or vertical direction                $moveToEmpty
-    2. should not move to fields with pieces of the same color or behind them  $notMoveSameColor
+    2. should not move to fields with pieces of the same color or behind them         $notMoveSameColor
 
                           """
 

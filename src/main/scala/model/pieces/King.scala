@@ -19,9 +19,12 @@ object King {
         field.up.right,
         field.down.left,
         field.down.right
-      ) filter { target => board.get(target) forall {
-        !king.isAlly(_)
-      }
+      ) filter {
+        target => board.get(target) forall {
+          !king.isAlly(_)
+        }
+      } filter {
+        board.isOnBoard
       } map { target => Move(king.id, field, target) }
 
       val rookPositions = History.unmoved(history, king) match {

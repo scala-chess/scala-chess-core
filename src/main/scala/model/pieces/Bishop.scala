@@ -21,6 +21,8 @@ object Bishop {
         target => board.get(target) forall {
           !bishop.isAlly(_)
         }
+      } filter {
+        board.isOnBoard
       } map {
         target => Move(bishop.id, field, target)
       }
