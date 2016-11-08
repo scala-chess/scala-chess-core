@@ -26,6 +26,8 @@ object Queen {
         target => board.get(target) forall {
           !queen.isAlly(_)
         }
+      } filter {
+        board.isOnBoard
       } map {
         target => Move(queen.id, field, target)
       }

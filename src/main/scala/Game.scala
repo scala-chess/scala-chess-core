@@ -11,9 +11,7 @@ class Game {
 
   def getValidActions(board: Board, origin: (Int, Int)): Iterable[Action] = {
     board.get(origin) map {
-      PieceLogic(_).getActions(origin, board, actions) filter {
-        a => board.isOnBoard(a.target)
-      } 
+      PieceLogic(_).getActions(origin, board, actions)
     } getOrElse Iterable()
   }
 

@@ -11,14 +11,14 @@ object Pawn {
   implicit class PawnLogic(val pawn: Pawn) extends PieceLogic(pawn) {
     override def getActions(field: (Int, Int), board: Board, history: Iterable[Action]): Iterable[Action] = {
 
-      val toEmpty2Actions = Seq(
+      val toEmpty2Targets = Seq(
         field.straight(pawn).straight(pawn)
       ) filter {
         target =>
           board.get(field.straight(pawn)).isEmpty &&
             board.get(target).isEmpty &&
             History.unmoved(history, pawn)
-      } map { target => Move(pawn.id, field, target) }
+      }
 
       val toEmptyTargets = Seq(
         field.straight(pawn)
@@ -35,20 +35,23 @@ object Pawn {
         }
       }
 
-      val emptyOccupiedActions = (toEmptyTargets ++ toOccupiedTargets) flatMap {
-        case target@(x, y) if Seq(board.matrix.size - 1, 0).contains(y) =>
-          Seq(
-            MoveAndChangeChoice.Bishop,
-            MoveAndChangeChoice.Queen,
-            MoveAndChangeChoice.Knight,
-            MoveAndChangeChoice.Rook
-          ) map {
-            MoveAndChange(pawn.id, field, target, _)
-          }
-        case target@(x, y) => Seq(Move(pawn.id, field, target))
-      }
+      val emptyOccupiedActions =
+        toEmptyTargets ++ toOccupiedTargets ++ toEmpty2Targets filter {
+          board.isOnBoard
+        } flatMap {
+          case target@(x, y) if Seq(board.matrix.size - 1, 0).contains(y) =>
+            Seq(
+              MoveAndChangeChoice.Bishop,
+              MoveAndChangeChoice.Queen,
+              MoveAndChangeChoice.Knight,
+              MoveAndChangeChoice.Rook
+            ) map {
+              MoveAndChange(pawn.id, field, target, _)
+            }
+          case target@(x, y) => Seq(Move(pawn.id, field, target))
+        }
 
-      emptyOccupiedActions ++ toEmpty2Actions
+      emptyOccupiedActions
     }
   }
 

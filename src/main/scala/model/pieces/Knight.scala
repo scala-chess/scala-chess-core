@@ -19,9 +19,12 @@ object Knight {
         field.up.up.right,
         field.down.down.left,
         field.down.down.right
-      ) filter { target => board.get(target) forall {
-        !knight.isAlly(_)
-      }
+      ) filter {
+        target => board.get(target) forall {
+          !knight.isAlly(_)
+        }
+      } filter {
+        board.isOnBoard
       } map { target => Move(knight.id, field, target) }
   }
 
