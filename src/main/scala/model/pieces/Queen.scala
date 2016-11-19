@@ -29,7 +29,7 @@ object Queen {
       } filter {
         board.isOnBoard
       } map {
-        target => Move(queen.id, field, target)
+        target => Move(queen.id, field, List())
       }
   }
 

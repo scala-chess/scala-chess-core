@@ -1,17 +1,13 @@
 package model
 
-import types.Direction
+import chess.api.{Direction, Position}
 
 object Pattern {
-  def line(dir: Direction, board: Board, pos: (Int, Int), depth: Int = 0): List[(Int, Int)] = {
+  def line(dir: Direction, pos: Position, maxDepth: Int, depth: Int = 0): List[(Int, Int)] = {
     val target = dir(pos)
-    if (depth > board.matrix.size) {
-      List()
-    } else {
-      board.get(target) match {
-        case None => target :: line(dir, board, target, depth + 1)
-        case Some(piece) => List(target)
-      }
+    depth match {
+      case d if depth > maxDepth => List()
+      case _ => target :: line(dir, target, maxDepth, depth + 1)
     }
   }
 }

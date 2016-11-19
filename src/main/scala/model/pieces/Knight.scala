@@ -25,7 +25,7 @@ object Knight {
         }
       } filter {
         board.isOnBoard
-      } map { target => Move(knight.id, field, target) }
+      } map { target => Move(knight.id, field, List()) }
   }
 
 }

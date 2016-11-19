@@ -1,12 +1,6 @@
 package model
 
 import chess.api._
-import model.pieces.Bishop._
-import model.pieces.King._
-import model.pieces.Knight._
-import model.pieces.Pawn._
-import model.pieces.Queen._
-import model.pieces.Rook._
 
 abstract class PieceLogic(piece: Piece) {
   override def toString: String = s"${piece.color}-${piece.getClass.getSimpleName}"
@@ -15,7 +9,7 @@ abstract class PieceLogic(piece: Piece) {
 
   def isEnemy(other: Piece) = !isAlly(other)
 
-  def getActions(field: (Int, Int), board: Board, history: Iterable[Action]): Iterable[Action]
+//  def getActions(field: (Int, Int), board: Board, history: Iterable[Action]): Iterable[Action]
 
   def handle(board: Board, action: Action): Board =
     action match {
@@ -33,17 +27,17 @@ abstract class PieceLogic(piece: Piece) {
 }
 
 
-object PieceLogic {
-  def apply(piece: Piece) =
-    piece match {
-      case p: King => new KingLogic(p)
-      case p: Queen => new QueenLogic(p)
-      case p: Rook => new RookLogic(p)
-      case p: Bishop => new BishopLogic(p)
-      case p: Knight => new KnightLogic(p)
-      case p: Pawn => new PawnLogic(p)
-    }
-}
+//object PieceLogic {
+//  def apply(piece: Piece) =
+//    piece match {
+//      case p: King => new KingLogic(p)
+//      case p: Queen => new QueenLogic(p)
+//      case p: Rook => new RookLogic(p)
+//      case p: Bishop => new BishopLogic(p)
+//      case p: Knight => new KnightLogic(p)
+//      case p: Pawn => new PawnLogic(p)
+//    }
+//}
 
 
 

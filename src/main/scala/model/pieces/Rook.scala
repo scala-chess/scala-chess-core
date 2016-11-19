@@ -24,7 +24,7 @@ object Rook {
       } filter {
         board.isOnBoard
       } map {
-        target => Move(rook.id, field, target)
+        target => Move(rook.id, field, List())
       }
   }
 

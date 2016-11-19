@@ -46,9 +46,9 @@ object Pawn {
               MoveAndChangeChoice.Knight,
               MoveAndChangeChoice.Rook
             ) map {
-              MoveAndChange(pawn.id, field, target, _)
+              MoveAndChange(pawn.id, field, List(), _)
             }
-          case target@(x, y) => Seq(Move(pawn.id, field, target))
+          case target@(x, y) => Seq(Move(pawn.id, field, List()))
         }
 
       emptyOccupiedActions

@@ -25,7 +25,7 @@ object King {
         }
       } filter {
         board.isOnBoard
-      } map { target => Move(king.id, field, target) }
+      } map { target => Move(king.id, field, List()) }
 
       val rookPositions = History.unmoved(history, king) match {
         case true => board.getAll flatMap {
@@ -46,7 +46,8 @@ object King {
         t =>
           val rookPosition = t._1
           val dir = t._2
-          Castle(king.id, field, rookPosition, dir(dir(field)), dir(field))
+//          Castle(king.id, field, rookPosition, dir(dir(field)), dir(field))
+          Castle(king.id, field, List())
       }
 
       move ++ castle
@@ -74,8 +75,8 @@ object King {
             king <- board.get(castle.origin) collect { case king: King => king }
             rook <- board.get(castle.target) collect { case rook: Rook => rook }
           } yield board
-            .set(castle.targetKing, Some(king))
-            .set(castle.targetRook, Some(rook))
+//            .set(castle.targetKing, Some(king))
+//            .set(castle.targetRook, Some(rook))
             .set(castle.target, None)
             .set(castle.origin, None)
           optionBoard getOrElse board
