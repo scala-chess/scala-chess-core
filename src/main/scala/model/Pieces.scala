@@ -7,11 +7,11 @@ import model.logic.modifier.{TargetEmpty, TargetOccupied, Unmoved}
 object Pieces {
   def getLogic(piece: Piece, boardSize: Int): Seq[Logic] =
     piece match {
-      case _: Rook => new HorizontalVerticalLine(boardSize) :: List()
-      case _: King => new HorizontalVerticalLine(1) :: new DiagonalLine(1) :: new Castle with Unmoved :: List()
-      case _: Queen => new HorizontalVerticalLine(boardSize) :: new DiagonalLine(boardSize) :: List()
-      case _: Bishop => new DiagonalLine(boardSize) :: List()
-      case _: Pawn => new StraightStep(1) with TargetEmpty :: new StraightStep(2) with TargetEmpty with Unmoved :: new StraightDiagonalStep(1) with TargetOccupied :: List()
+      case _: Rook => new HorizontalVerticalLine() :: List()
+      case _: King => new HorizontalVerticalLine() :: new DiagonalLine() :: new Castle with Unmoved :: List()
+      case _: Queen => new HorizontalVerticalLine() :: new DiagonalLine() :: List()
+      case _: Bishop => new DiagonalLine() :: List()
+      case _: Pawn => new StraightStep() with TargetEmpty :: new StraightStep(Some(2)) with TargetEmpty with Unmoved :: new StraightDiagonalStep() with TargetOccupied :: List()
       case _: Knight => new KnightPattern :: List()
     }
 }

@@ -6,17 +6,19 @@ import model.actions.ActionFactory
 import model.logic.modifier.{EmptyBetween, IsOnBoard}
 import model.{History, Pattern}
 
-class StraightStep(val step: Int) extends StraightStepMixin with EmptyBetween with IsOnBoard
+class StraightStep(val step: Option[Int] = None) extends StraightStepMixin with EmptyBetween with IsOnBoard
 
 trait StraightStepMixin extends Logic {
-  val step: Int
+  val step: Option[Int]
 
-  override def getActions(field: (Int, Int), history: History): Seq[Action] =
+  override def getActions(field: Position, history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece => Seq(
         (t: Position) => t.straight(piece)
       ) map {
-        Pattern.line(_, field, step).last
+        dir =>
+          val stepUnwrapped = step getOrElse 1
+          Pattern.line(dir, field, stepUnwrapped).last
       } filter {
         target => history.pieceAt(target) forall {
           targetPiece => targetPiece.color != piece.color

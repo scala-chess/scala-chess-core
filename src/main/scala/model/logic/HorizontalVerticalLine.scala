@@ -1,27 +1,29 @@
 package model.logic
 
-import chess.api.Action
+import chess.api.{Action, Position}
 import model.SeqExtensions._
 import model.TupleUtils._
 import model.actions.ActionFactory
 import model.logic.modifier.IsOnBoard
 import model.{History, Pattern}
 
-class HorizontalVerticalLine(val maxSteps: Int) extends HorizontalVerticalLineMixin with IsOnBoard
+class HorizontalVerticalLine(val maxSteps: Option[Int] = None) extends HorizontalVerticalLineMixin with IsOnBoard
 
 trait HorizontalVerticalLineMixin extends Logic {
-  val maxSteps: Int
+  val maxSteps: Option[Int]
 
-  override def getActions(field: (Int, Int), history: History): Seq[Action] =
+  override def getActions(field: Position, history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece =>
         Seq(
-          (t: (Int, Int)) => t.up,
-          (t: (Int, Int)) => t.left,
-          (t: (Int, Int)) => t.right,
-          (t: (Int, Int)) => t.down
+          (t: Position) => t.up,
+          (t: Position) => t.left,
+          (t: Position) => t.right,
+          (t: Position) => t.down
         ) flatMap {
-          dir => Pattern.line(dir, field, 8) takeUntil { pos => history.pieceAt(pos).isDefined }
+          dir =>
+            val maxStepsUnwrapped = maxSteps getOrElse history.maxBoardSize
+            Pattern.line(dir, field, maxStepsUnwrapped) takeUntil { pos => history.pieceAt(pos).isDefined }
         } filter {
           target =>
             history.pieceAt(target) forall {

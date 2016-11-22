@@ -49,8 +49,7 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
       case a: PutInitial => a.piece
     } flatMap {
       piece => positionOf(piece) map {
-        pos =>
-          (pos, piece)
+        pos => (pos, piece)
       }
     }
 
