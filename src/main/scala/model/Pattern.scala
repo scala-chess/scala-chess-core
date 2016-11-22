@@ -17,6 +17,7 @@ object Pattern {
     val absDiffs = (Math.abs(diff.x), Math.abs(diff.y))
 
     absDiffs match {
+      case (0, 0) => (t: Position) => to
       case (x, 0) => (t: Position) => (t.x + diff.x / x, t.y)
       case (0, y) => (t: Position) => (t.x, t.y + diff.y / y)
       case (x, y) if x == y => (t: Position) => (t.x + diff.x / x, t.y + diff.y / y)

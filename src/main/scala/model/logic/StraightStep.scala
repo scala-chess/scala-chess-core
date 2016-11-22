@@ -2,9 +2,8 @@ package model.logic
 
 import chess.api.{Action, Position}
 import model.TupleUtils._
-import model.actions.ActionFactory
 import model.logic.modifier.{EmptyBetween, IsOnBoard}
-import model.{History, Pattern}
+import model.{ActionFactory, History, Pattern}
 
 class StraightStep(val step: Option[Int] = None) extends StraightStepMixin with EmptyBetween with IsOnBoard
 

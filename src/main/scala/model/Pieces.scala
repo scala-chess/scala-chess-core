@@ -1,18 +1,29 @@
 package model
 
-import chess.api.{Bishop, Color, King, Knight, Pawn, Piece, Queen, Rook}
+import chess.api.{Bishop, Color, King, Knight, Move, MoveAndReplace, Pawn, Piece, Queen, Rook}
 import model.logic._
-import model.logic.modifier.{TargetEmpty, TargetOccupied, Unmoved}
+import model.logic.modifier._
+import model.logic.modifier.conditionalMapper.MoveReplaceMapper
 
 object Pieces {
-  def getLogic(piece: Piece, boardSize: Int): Seq[Logic] =
+  def getLogic(piece: Piece): Seq[Logic] =
     piece match {
-      case _: Rook => new HorizontalVerticalLine() :: List()
-      case _: King => new HorizontalVerticalLine() :: new DiagonalLine() :: new Castle with Unmoved :: List()
-      case _: Queen => new HorizontalVerticalLine() :: new DiagonalLine() :: List()
-      case _: Bishop => new DiagonalLine() :: List()
-      case _: Pawn => new StraightStep() with TargetEmpty :: new StraightStep(Some(2)) with TargetEmpty with Unmoved :: new StraightDiagonalStep() with TargetOccupied :: List()
-      case _: Knight => new KnightPattern :: List()
+      case _: Rook =>
+        new HorizontalVerticalLine() :: List()
+      case _: King =>
+        new HorizontalVerticalLine() ::
+          new DiagonalLine() :: new Castle with Unmoved :: List()
+      case _: Queen =>
+        new HorizontalVerticalLine() ::
+          new DiagonalLine() :: List()
+      case _: Bishop =>
+        new DiagonalLine() :: List()
+      case _: Pawn =>
+        new StraightStep() with TargetEmpty with MoveReplaceMapper ::
+          new StraightStep(Some(2)) with TargetEmpty with Unmoved with MoveReplaceMapper ::
+          new StraightDiagonalStep() with TargetOccupied with MoveReplaceMapper :: List()
+      case _: Knight =>
+        new KnightPattern :: List()
     }
 }
 

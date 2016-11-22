@@ -3,9 +3,8 @@ package model.logic
 import chess.api.{Action, Position}
 import model.SeqExtensions._
 import model.TupleUtils._
-import model.actions.ActionFactory
 import model.logic.modifier.IsOnBoard
-import model.{History, Pattern}
+import model.{ActionFactory, History, Pattern}
 
 class HorizontalVerticalLine(val maxSteps: Option[Int] = None) extends HorizontalVerticalLineMixin with IsOnBoard
 

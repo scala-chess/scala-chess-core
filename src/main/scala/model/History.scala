@@ -36,8 +36,11 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     }
 
   def positionOf(piece: Piece): Option[Position] =
+    positionOf(piece.id)
+
+  def positionOf(pieceId: Int): Option[Position] =
     actions.flattenToReversed(classOf[Put], classOf[Remove], classOf[PutInitial]) find {
-      _.pieceId == piece.id
+      _.pieceId == pieceId
     } flatMap {
       case remove: Remove => None
       case putInit: PutInitial => Some(putInit.target)
@@ -48,9 +51,10 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     actions.flattenTo(classOf[PutInitial]) map {
       case a: PutInitial => a.piece
     } flatMap {
-      piece => positionOf(piece) map {
-        pos => (pos, piece)
-      }
+      piece =>
+        positionOf(piece) map {
+          pos => (pos, piece)
+        }
     }
 
   def boardSize: (Int, Int) =
@@ -71,6 +75,9 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     } exists {
       boardSize => pos.x >= 0 && pos.y >= 0 && pos.x < boardSize.x && pos.y < boardSize.y
     }
+
+  //  TODO add config to set
+  def triggerPositions(pieceId: Int): Seq[Position] = Seq()
 
   def :+(historyItem: Either[Action, Config]): History =
     new History(history :+ historyItem)

@@ -8,22 +8,24 @@ class Game {
 
   var history: History = new History(ChessBoard.init)
 
-  def getValidActions(origin: (Int, Int)): Iterable[Action] = {
-    history.pieceAt(origin) map {
-      piece => Pieces.getLogic(piece, 8)
+  def getValidActions(origin: (Int, Int)): Seq[Action] = {
+    val res = history.pieceAt(origin) map {
+      piece => Pieces.getLogic(piece)
     } map {
       Logic.getActions(_, origin, history)
-    } getOrElse Iterable()
+    } getOrElse Seq()
+
+    res
   }
 
   def execIfValid(action: Action): Either[String, chess.api.ChessBoard] = {
-    action.origin map {
+    history.positionOf(action.pieceId) map {
       origin =>
         getValidActions(origin) collectFirst {
           case a: Action if a == action => a
         } map {
           validAction: Action => {
-            history :+ Left(validAction)
+            history = history :+ Left(validAction)
             Right(toApiChessBoard)
           }
         } getOrElse Left("illegal action cannot be executed")

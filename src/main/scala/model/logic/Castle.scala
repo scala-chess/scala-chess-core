@@ -2,9 +2,8 @@ package model.logic
 
 import chess.api.{Action, Direction, Position}
 import model.TupleUtils._
-import model.actions.ActionFactory
 import model.logic.modifier.EmptyBetween
-import model.{History, Pattern}
+import model.{ActionFactory, History, Pattern}
 
 class Castle extends CastleMixin with EmptyBetween
 

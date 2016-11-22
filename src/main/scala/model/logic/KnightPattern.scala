@@ -1,10 +1,9 @@
 package model.logic
 
 import chess.api.Action
-import model.History
 import model.TupleUtils._
-import model.actions.ActionFactory
 import model.logic.modifier.IsOnBoard
+import model.{ActionFactory, History}
 
 class KnightPattern extends KnightPatternMixin with IsOnBoard
 
