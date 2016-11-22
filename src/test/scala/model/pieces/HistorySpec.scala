@@ -14,15 +14,15 @@ class HistorySpec extends Specification {
       """
 
   def pieceAt = {
-    val k1 = King(Color.Black);
-    val history = List(
-      PutInitial((0,0), King(Color.Black)),
-      PutInitial((0,1), King(Color.Black)),
+    val k1 = model.King(Color.Black)
+    val history = new History(List(
+      PutInitial((0,0), model.King(Color.Black)),
+      PutInitial((0,1), model.King(Color.Black)),
       PutInitial((0,2), k1),
       Put(0, (1,2)),
       Remove(1, (0,1))
-    )
+    ) map { x => Left(x)})
 
-    History.pieceAt((1,2), history) must_==(Some(k1))
+    history.pieceAt((1,2)) must_==(Some(k1))
   }
 }

@@ -1,12 +1,17 @@
-package model.logic.move
+package model.logic
 
 import chess.api.{Action, Position}
 import model.ListExtensions._
 import model.TupleUtils._
 import model.actions.ActionFactory
+import model.logic.modifier.IsOnBoard
 import model.{History, Pattern}
 
-class Diagonal extends Logic {
+object DiagonalLine {
+  def apply(maxSteps: Int): DiagonalLine = new DiagonalLine(maxSteps) with IsOnBoard
+}
+
+class DiagonalLine(val maxSteps: Int) extends Logic {
   override def getActions(field: Position, history: History): List[Action] =
     history.pieceAt(field) map {
       piece =>
@@ -16,15 +21,13 @@ class Diagonal extends Logic {
           (t: (Int, Int)) => t.down.right,
           (t: (Int, Int)) => t.down.left
         ) flatMap {
-          dir => Pattern.line(dir, field, 8) takeUntil (pos => history.pieceAt(pos).isDefined)
+          dir => Pattern.line(dir, field, maxSteps) takeUntil (pos => history.pieceAt(pos).isDefined)
         } filter {
           target => history.pieceAt(target) forall {
             targetPiece => targetPiece.color != piece.color
           }
-          //        } filter {
-          //          history.isOnBoard
         } map {
-          target => ActionFactory.move(field, target, history)
+          target => ActionFactory.move(piece.id, field, target, history)
         }
     } getOrElse List()
 }

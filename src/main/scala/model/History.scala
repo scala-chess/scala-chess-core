@@ -2,12 +2,18 @@ package model
 
 import chess.api._
 import model.ListExtensions._
+import model.TupleUtils._
 
-class History extends Iterable[Action] {
-  val actions: List[Action] = List()
+class History(val history: List[Either[Action, Config]] = List()) extends Iterable[Either[Action, Config]] {
 
-  def unmoved(history: Iterable[Action], piece: Piece): Boolean = {
-    !(history exists {
+  override def iterator: Iterator[Either[Action, Config]] = history.iterator
+
+  def actions = history collect { case Left(action) => action }
+
+  def config = history collect { case Right(config) => config }
+
+  def unmoved(piece: Piece): Boolean = {
+    !(actions exists {
       case x: Move => x.pieceId == piece.id
       case x: Castle => x.pieceId == piece.id
       case _ => false
@@ -15,19 +21,59 @@ class History extends Iterable[Action] {
   }
 
   def pieceAt(pos: Position): Option[Piece] =
-    actions.reverse.flattenTo(classOf[Put], classOf[Remove], classOf[PutInitial]) find {
+    actions.flattenToReversed(classOf[Put], classOf[Remove], classOf[PutInitial]) find {
       _.target == pos
     } flatMap {
       case remove: Remove => None
       case putInit: PutInitial => Some(putInit.piece)
       case put: Put =>
         actions.find {
-        case a: PutInitial => a.pieceId == put.pieceId
-        case _ => false
-      } map {
-        case a: PutInitial => a.piece
+          case a: PutInitial => a.pieceId == put.pieceId
+          case _ => false
+        } map {
+          case a: PutInitial => a.piece
+        }
+    }
+
+  def positionOf(piece: Piece): Option[Position] =
+    actions.flattenToReversed(classOf[Put], classOf[Remove], classOf[PutInitial]) find {
+      _.pieceId == piece.id
+    } flatMap {
+      case remove: Remove => None
+      case putInit: PutInitial => Some(putInit.target)
+      case put: Put => Some(put.target)
+    }
+
+  def all: List[(Position, Piece)] =
+    actions.flattenTo(classOf[PutInitial]) map {
+      case a: PutInitial => a.piece
+    } flatMap {
+      piece => positionOf(piece) map {
+        pos =>
+          (pos, piece)
       }
     }
 
-  override def iterator: Iterator[Action] = actions.iterator
+  def boardSize: (Int, Int) =
+    config.reverse collectFirst {
+      case boardSize: BoardSize => boardSize
+    } map {
+      boardSize => (boardSize.x, boardSize.y)
+    } getOrElse(0, 0)
+
+  def maxBoardSize: Int = {
+    val size = boardSize
+    Math.max(size.x, size.y)
+  }
+
+  def isOnBoard(pos: Position): Boolean =
+    config collectFirst {
+      case boardSize: BoardSize => boardSize
+    } exists {
+      boardSize => pos.x >= 0 && pos.y >= 0 && pos.x < boardSize.x && pos.y < boardSize.y
+    }
+
+  def :+(historyItem: Either[Action, Config]): History =
+    new History(history :+ historyItem)
+
 }

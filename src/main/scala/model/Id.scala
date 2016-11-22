@@ -1,7 +1,7 @@
 package model
 
 object Id {
-  var nextId = 0;
+  private var nextId = 0
 
   def next = {
     val id = nextId

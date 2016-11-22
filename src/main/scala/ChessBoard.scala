@@ -1,39 +1,42 @@
-import model.Board
-import model.pieces._
-import chess.api.Color
+import chess.api._
 
 object ChessBoard {
-    def apply() = new Board()
-    .set((4, 0), Some(King(Color.Black)))
-    .set((4, 7), Some(King(Color.White)))
-    .set((1, 0), Some(Knight(Color.Black)))
-    .set((6, 0), Some(Knight(Color.Black)))
-    .set((1, 7), Some(Knight(Color.White)))
-    .set((6, 7), Some(Knight(Color.White)))
-    .set((0, 0), Some(Rook(Color.Black)))
-    .set((7, 0), Some(Rook(Color.Black)))
-    .set((0, 7), Some(Rook(Color.White)))
-    .set((7, 7), Some(Rook(Color.White)))
-    .set((2, 0), Some(Bishop(Color.Black)))
-    .set((5, 0), Some(Bishop(Color.Black)))
-    .set((2, 7), Some(Bishop(Color.White)))
-    .set((5, 7), Some(Bishop(Color.White)))
-    .set((3, 0), Some(Queen(Color.Black)))
-    .set((3, 7), Some(Queen(Color.White)))
-    .set((0, 1), Some(Pawn(Color.Black)))
-    .set((1, 1), Some(Pawn(Color.Black)))
-    .set((2, 1), Some(Pawn(Color.Black)))
-    .set((3, 1), Some(Pawn(Color.Black)))
-    .set((4, 1), Some(Pawn(Color.Black)))
-    .set((5, 1), Some(Pawn(Color.Black)))
-    .set((6, 1), Some(Pawn(Color.Black)))
-    .set((7, 1), Some(Pawn(Color.Black)))
-    .set((0, 6), Some(Pawn(Color.White)))
-    .set((1, 6), Some(Pawn(Color.White)))
-    .set((2, 6), Some(Pawn(Color.White)))
-    .set((3, 6), Some(Pawn(Color.White)))
-    .set((4, 6), Some(Pawn(Color.White)))
-    .set((5, 6), Some(Pawn(Color.White)))
-    .set((6, 6), Some(Pawn(Color.White)))
-    .set((7, 6), Some(Pawn(Color.White)))
+  def init: List[Either[Action, Config]] =
+    Right(BoardSize(8, 8)) :: (actions map { action => Left(action) })
+
+  val actions =
+    List(
+      new PutInitial((4, 0), model.King(Color.Black)),
+      new PutInitial((4, 0), model.King(Color.Black)),
+      new PutInitial((4, 7), model.King(Color.White)),
+      new PutInitial((1, 0), model.Knight(Color.Black)),
+      new PutInitial((6, 0), model.Knight(Color.Black)),
+      new PutInitial((1, 7), model.Knight(Color.White)),
+      new PutInitial((6, 7), model.Knight(Color.White)),
+      new PutInitial((0, 0), model.Rook(Color.Black)),
+      new PutInitial((7, 0), model.Rook(Color.Black)),
+      new PutInitial((0, 7), model.Rook(Color.White)),
+      new PutInitial((7, 7), model.Rook(Color.White)),
+      new PutInitial((2, 0), model.Bishop(Color.Black)),
+      new PutInitial((5, 0), model.Bishop(Color.Black)),
+      new PutInitial((2, 7), model.Bishop(Color.White)),
+      new PutInitial((5, 7), model.Bishop(Color.White)),
+      new PutInitial((3, 0), model.Queen(Color.Black)),
+      new PutInitial((3, 7), model.Queen(Color.White)),
+      new PutInitial((0, 1), model.Pawn(Color.Black)),
+      new PutInitial((1, 1), model.Pawn(Color.Black)),
+      new PutInitial((2, 1), model.Pawn(Color.Black)),
+      new PutInitial((3, 1), model.Pawn(Color.Black)),
+      new PutInitial((4, 1), model.Pawn(Color.Black)),
+      new PutInitial((5, 1), model.Pawn(Color.Black)),
+      new PutInitial((6, 1), model.Pawn(Color.Black)),
+      new PutInitial((7, 1), model.Pawn(Color.Black)),
+      new PutInitial((0, 6), model.Pawn(Color.White)),
+      new PutInitial((1, 6), model.Pawn(Color.White)),
+      new PutInitial((2, 6), model.Pawn(Color.White)),
+      new PutInitial((3, 6), model.Pawn(Color.White)),
+      new PutInitial((4, 6), model.Pawn(Color.White)),
+      new PutInitial((5, 6), model.Pawn(Color.White)),
+      new PutInitial((6, 6), model.Pawn(Color.White)),
+      new PutInitial((7, 6), model.Pawn(Color.White)))
 }
