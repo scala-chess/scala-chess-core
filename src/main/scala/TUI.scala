@@ -36,7 +36,9 @@ class TUI(val chessController: ActorRef) extends Actor {
 
         val result = chessController ? QueryValidActions(pos)
 
-        validActions = Await.result(result, Duration.Inf) match {case actions: Seq[Action] => actions}
+        validActions = Await.result(result, Duration.Inf) match {
+          case actions: Seq[Action] => actions
+        }
 
       }
       println("Choose Action:")
@@ -51,9 +53,6 @@ class TUI(val chessController: ActorRef) extends Actor {
   }
 
   def printBoard(board: Seq[(Position, Piece)]) = {
-    var i = 0
-    var j = 0
-
     for (i <- 0 to 7) {
       for (j <- 0 to 7) {
         val letter = board find {
@@ -73,9 +72,8 @@ class TUI(val chessController: ActorRef) extends Actor {
         }
         print("|" + letter)
       }
-      println("")
+      println("|")
     }
-
     println("")
   }
 
