@@ -1,10 +1,10 @@
 package model
 
 import chess.api._
-import model.ListExtensions._
+import model.SeqExtensions._
 import model.TupleUtils._
 
-class History(val history: List[Either[Action, Config]] = List()) extends Iterable[Either[Action, Config]] {
+class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable[Either[Action, Config]] {
 
   override def iterator: Iterator[Either[Action, Config]] = history.iterator
 
@@ -44,7 +44,7 @@ class History(val history: List[Either[Action, Config]] = List()) extends Iterab
       case put: Put => Some(put.target)
     }
 
-  def all: List[(Position, Piece)] =
+  def all: Seq[(Position, Piece)] =
     actions.flattenTo(classOf[PutInitial]) map {
       case a: PutInitial => a.piece
     } flatMap {

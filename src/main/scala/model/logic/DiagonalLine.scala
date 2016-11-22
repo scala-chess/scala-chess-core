@@ -1,21 +1,21 @@
 package model.logic
 
 import chess.api.{Action, Position}
-import model.ListExtensions._
+import model.SeqExtensions._
 import model.TupleUtils._
 import model.actions.ActionFactory
 import model.logic.modifier.IsOnBoard
 import model.{History, Pattern}
 
-object DiagonalLine {
-  def apply(maxSteps: Int): DiagonalLine = new DiagonalLine(maxSteps) with IsOnBoard
-}
+class DiagonalLine(val maxSteps: Int) extends DiagonalLineMixin with IsOnBoard
 
-class DiagonalLine(val maxSteps: Int) extends Logic {
-  override def getActions(field: Position, history: History): List[Action] =
+trait DiagonalLineMixin extends Logic {
+  val maxSteps: Int
+
+  override def getActions(field: Position, history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece =>
-        List(
+        Seq(
           (t: (Int, Int)) => t.up.right,
           (t: (Int, Int)) => t.up.left,
           (t: (Int, Int)) => t.down.right,
@@ -29,5 +29,6 @@ class DiagonalLine(val maxSteps: Int) extends Logic {
         } map {
           target => ActionFactory.move(piece.id, field, target, history)
         }
-    } getOrElse List()
+    } getOrElse Seq()
 }
+

@@ -2,7 +2,7 @@ package model.pieces
 
 object TestHelper {
 
-  def positionsFromAsciiBoard(asciiBoard: String, posChar: String): List[(Int, Int)] =
+  def positionsFromAsciiBoard(asciiBoard: String, posChar: String): Seq[(Int, Int)] =
     asciiBoard
       .split("\n")
       .map(_.trim)
@@ -17,5 +17,5 @@ object TestHelper {
             .filter(t => posChar == t._1)
             .map(t => (t._2, inner._2))
       )
-      .toList
+      .toSeq
 }

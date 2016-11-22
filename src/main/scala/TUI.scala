@@ -5,7 +5,7 @@ import scala.io.StdIn
 
 class TUI(game: Game) {
 
-  def update(board: List[(Position, Piece)]): Action = {
+  def update(board: Seq[(Position, Piece)]): Action = {
     printBoard(board)
     var validActions: Iterable[Action] = Iterable()
     var selectedIndex = -1
@@ -30,7 +30,7 @@ class TUI(game: Game) {
     validActions.toIndexedSeq(selectedIndex)
   }
 
-  def printBoard(board: List[(Position, Piece)]) = {
+  def printBoard(board: Seq[(Position, Piece)]) = {
     var i = 0
     var j = 0
 

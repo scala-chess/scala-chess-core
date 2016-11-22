@@ -5,7 +5,7 @@ import model.History
 import model.logic.Logic
 
 trait TargetEmpty extends Logic {
-  override def getActions(field: (Int, Int), history: History): List[Action] =
+  override def getActions(field: (Int, Int), history: History): Seq[Action] =
     super.getActions(field, history) filter {
       action => history.pieceAt(action.target).isEmpty
     }

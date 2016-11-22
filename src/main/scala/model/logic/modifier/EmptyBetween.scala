@@ -5,7 +5,7 @@ import model.logic.Logic
 import model.{History, Pattern}
 
 trait EmptyBetween extends Logic {
-  override def getActions(field: (Int, Int), history: History): List[Action] =
+  override def getActions(field: (Int, Int), history: History): Seq[Action] =
     super.getActions(field, history) filter {
       action => betweenX(action.origin.get, action.target) flatMap { pos => history.pieceAt(pos) } isEmpty
     }

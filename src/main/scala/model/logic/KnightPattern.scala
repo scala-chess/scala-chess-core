@@ -6,15 +6,13 @@ import model.TupleUtils._
 import model.actions.ActionFactory
 import model.logic.modifier.IsOnBoard
 
-object KnightPattern {
-  def apply: KnightPattern = new KnightPattern() with IsOnBoard
-}
+class KnightPattern extends KnightPatternMixin with IsOnBoard
 
-class KnightPattern extends Logic {
-  override def getActions(field: (Int, Int), history: History): List[Action] =
+trait KnightPatternMixin extends Logic {
+  override def getActions(field: (Int, Int), history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece =>
-        List(
+        Seq(
           field.right.right.up,
           field.right.right.down,
           field.left.left.up,
@@ -30,5 +28,6 @@ class KnightPattern extends Logic {
         } map {
           target => ActionFactory.move(piece.id, field, target, history)
         }
-    } getOrElse List()
+    } getOrElse Seq()
 }
+

@@ -6,12 +6,10 @@ import model.actions.ActionFactory
 import model.logic.modifier.EmptyBetween
 import model.{History, Pattern}
 
-object Castle {
-  def apply(): Castle = new Castle() with EmptyBetween
-}
+class Castle extends CastleMixin with EmptyBetween
 
-class Castle extends Logic {
-  override def getActions(field: Position, history: History): List[Action] = {
+trait CastleMixin extends Logic {
+  override def getActions(field: Position, history: History): Seq[Action] = {
     history.pieceAt(field) map {
       piece =>
         history.all flatMap {
@@ -26,5 +24,5 @@ class Castle extends Logic {
             ActionFactory.castle(piece.id, field, dir(dir(field)), rookPosId._2, rookPosId._1, dir(field), history)
         }
     }
-  } getOrElse List()
+  } getOrElse Seq()
 }

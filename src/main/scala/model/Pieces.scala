@@ -5,7 +5,7 @@ import model.logic._
 import model.logic.modifier.{TargetEmpty, TargetOccupied, Unmoved}
 
 object Pieces {
-  def getLogic(piece: Piece, boardSize: Int): List[Logic] =
+  def getLogic(piece: Piece, boardSize: Int): Seq[Logic] =
     piece match {
       case _: Rook => new HorizontalVerticalLine(boardSize) :: List()
       case _: King => new HorizontalVerticalLine(1) :: new DiagonalLine(1) :: new Castle with Unmoved :: List()
@@ -17,7 +17,7 @@ object Pieces {
 }
 
 object King {
-  def apply(color: Color.Value) = new King(color, Id.next) 
+  def apply(color: Color.Value) = new King(color, Id.next)
 }
 
 object Queen {

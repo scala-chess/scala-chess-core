@@ -5,11 +5,11 @@ import model.History
 import model.logic.Logic
 
 trait Unmoved extends Logic {
-  override def getActions(field: (Int, Int), history: History): List[Action] =
+  override def getActions(field: (Int, Int), history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece => history.unmoved(piece) match {
         case true => super.getActions(field, history)
-        case false => List()
+        case false => Seq()
       }
-    } getOrElse List()
+    } getOrElse Seq()
 }

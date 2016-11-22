@@ -6,14 +6,14 @@ import model.actions.ActionFactory
 import model.logic.modifier.{EmptyBetween, IsOnBoard}
 import model.{History, Pattern}
 
-object StraightDiagonalStep {
-  def apply(step: Int): StraightDiagonalStep = new StraightDiagonalStep(step) with EmptyBetween with IsOnBoard
-}
+class StraightDiagonalStep(val step: Int) extends StraightDiagonalStepMixin with EmptyBetween with IsOnBoard
 
-class StraightDiagonalStep(step: Int) extends Logic {
-  override def getActions(field: (Int, Int), history: History): List[Action] =
+trait StraightDiagonalStepMixin extends Logic {
+  val step: Int
+
+  override def getActions(field: (Int, Int), history: History): Seq[Action] =
     history.pieceAt(field) map {
-      piece => List(
+      piece => Seq(
         (t: Position) => t.straight(piece).left,
         (t: Position) => t.straight(piece).right
       ) map {
@@ -25,5 +25,5 @@ class StraightDiagonalStep(step: Int) extends Logic {
       } map {
         target => ActionFactory.move(piece.id, field, target, history)
       }
-    } getOrElse List()
+    } getOrElse Seq()
 }

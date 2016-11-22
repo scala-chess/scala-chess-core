@@ -1,21 +1,21 @@
 package model.logic
 
 import chess.api.Action
-import model.ListExtensions._
+import model.SeqExtensions._
 import model.TupleUtils._
 import model.actions.ActionFactory
 import model.logic.modifier.IsOnBoard
 import model.{History, Pattern}
 
-object HorizontalVerticalLine {
-  def apply(maxSteps: Int): HorizontalVerticalLine = new HorizontalVerticalLine(maxSteps) with IsOnBoard
-}
+class HorizontalVerticalLine(val maxSteps: Int) extends HorizontalVerticalLineMixin with IsOnBoard
 
-class HorizontalVerticalLine(val maxSteps: Int) extends Logic {
-  override def getActions(field: (Int, Int), history: History): List[Action] =
+trait HorizontalVerticalLineMixin extends Logic {
+  val maxSteps: Int
+
+  override def getActions(field: (Int, Int), history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece =>
-        List(
+        Seq(
           (t: (Int, Int)) => t.up,
           (t: (Int, Int)) => t.left,
           (t: (Int, Int)) => t.right,
@@ -30,5 +30,7 @@ class HorizontalVerticalLine(val maxSteps: Int) extends Logic {
         } map {
           target => ActionFactory.move(piece.id, field, target, history)
         }
-    } getOrElse List()
+    } getOrElse Seq()
 }
+
+

@@ -6,7 +6,7 @@ import model.History
 
 object ActionFactory {
   def move(pieceId: Int, origin: Position, target: Position, history: History): Move = {
-    val actions = List(
+    val actions = Seq(
       Some(Remove(pieceId, origin)),
       history.pieceAt(target) map {
         removedPiece => Remove(removedPiece.id, target)
@@ -18,7 +18,7 @@ object ActionFactory {
   }
 
   def castle(firstPieceId: Int, firstOrigin: Position, firstTarget: Position, secondPieceId: Int, secondOrigin: Position, secondTarget:Position, history: History): Castle = {
-    val actions = List(
+    val actions = Seq(
       move(firstPieceId, firstOrigin, firstTarget, history),
       move(secondPieceId, secondOrigin, secondTarget, history)
     )

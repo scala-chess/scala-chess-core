@@ -15,7 +15,7 @@ class HistorySpec extends Specification {
 
   def pieceAt = {
     val k1 = model.King(Color.Black)
-    val history = new History(List(
+    val history = new History(Seq(
       PutInitial((0,0), model.King(Color.Black)),
       PutInitial((0,1), model.King(Color.Black)),
       PutInitial((0,2), k1),
