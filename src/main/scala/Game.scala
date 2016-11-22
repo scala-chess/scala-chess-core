@@ -4,14 +4,8 @@ import model.TupleUtils._
 import model._
 import model.logic.Logic
 
-object Game {
-  def main(args: Array[String]): Unit = {
-    new Game().run()
-  }
-}
-
 class Game {
-  val tui = new TUI(this)
+
   var history: History = new History(ChessBoard.init)
 
   def getValidActions(origin: (Int, Int)): Iterable[Action] = {
@@ -39,13 +33,6 @@ class Game {
   def toApiChessBoard: chess.api.ChessBoard = {
     val boardSize = history.boardSize
     chess.api.ChessBoard(boardSize.x, boardSize.y, history.all)
-  }
-
-  def run() = {
-    while (true) {
-      val newAction = tui.update(history.all)
-      history = history :+ Left(newAction)
-    }
   }
 }
 

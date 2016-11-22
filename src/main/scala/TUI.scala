@@ -1,11 +1,25 @@
 
-import chess.api._
+import java.util.concurrent.TimeUnit
 
+import akka.actor._
+import akka.pattern.ask
+import chess.api._
+import chess.api.actors.RegisterObserver
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 import scala.io.StdIn
 
-class TUI(game: Game) {
+class TUI(val chessController: ActorRef) extends Actor {
 
-  def update(board: Seq[(Position, Piece)]): Action = {
+  chessController ! RegisterObserver
+  implicit val timeout = akka.util.Timeout(5, TimeUnit.SECONDS)
+
+  override def receive = {
+    case u@Update(chessBoard) => update(chessBoard.pieces)
+  }
+
+  def update(board: Iterable[(Position, Piece)]): Unit = {
     printBoard(board)
     var validActions: Iterable[Action] = Iterable()
     var selectedIndex = -1
@@ -17,7 +31,14 @@ class TUI(game: Game) {
         val xStart = StdIn.readInt()
         print("y: ")
         val yStart = StdIn.readInt()
-        validActions = game.getValidActions((xStart, yStart))
+        val pos = (xStart, yStart)
+
+        val result = chessController ? QueryValidActions(pos)
+        Await.result(result, Duration.Inf) match {
+          case actions: Iterable[Action] => validActions = actions
+        }
+        println(validActions)
+        //validActions = game.getValidActions((xStart, yStart))
       }
       println("Choose Action:")
       validActions.zipWithIndex.foreach {
@@ -26,11 +47,10 @@ class TUI(game: Game) {
       }
       selectedIndex = StdIn.readInt()
     }
-
-    validActions.toIndexedSeq(selectedIndex)
+    chessController ! validActions.toIndexedSeq(selectedIndex)
   }
 
-  def printBoard(board: Seq[(Position, Piece)]) = {
+  def printBoard(board: Iterable[(Position, Piece)]) = {
     var i = 0
     var j = 0
 
