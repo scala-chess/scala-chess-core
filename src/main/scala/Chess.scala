@@ -1,4 +1,5 @@
 import akka.actor.{ActorSystem, Props}
+import akka.pattern.AskSupport
 import com.typesafe.config.ConfigFactory
 
 object Chess {
@@ -6,7 +7,8 @@ object Chess {
   def main(args: Array[String]): Unit = {
     val (actorSystemName, actorName) = getActorSystemConfig
     val actorSystem = ActorSystem.create(actorSystemName)
-    val chessController = actorSystem.actorOf(Props[ControllerActor], actorName)
+    val controller = actorSystem.actorOf(Props[ControllerActor], actorName)
+    actorSystem.actorOf(Props(new TUI(controller)))
   }
 
   def getActorSystemConfig = {
