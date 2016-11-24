@@ -4,6 +4,7 @@ import chess.api.{Action, Position}
 import model.TupleUtils._
 import model.logic.modifier.{EmptyBetween, IsOnBoard}
 import model.{ActionFactory, History, Pattern}
+import model.Pieces._
 
 class StraightDiagonalStep(val step: Option[Int] = None) extends StraightDiagonalStepMixin with EmptyBetween with IsOnBoard
 
@@ -21,7 +22,7 @@ trait StraightDiagonalStepMixin extends Logic {
           Pattern.line(dir, field, stepUnwrapped).last
       } filter {
         target => history.pieceAt(target) forall {
-          targetPiece => targetPiece.color != piece.color
+          targetPiece => piece.isEnemy(targetPiece)
         }
       } map {
         target => ActionFactory.move(piece.id, field, target, history)

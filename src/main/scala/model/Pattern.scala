@@ -13,10 +13,9 @@ object Pattern {
   }
 
   def direction(from: Position, to: Position): (Position) => Position = {
-    val diff = (to.x - from.x, to.y - from.y)
-    val absDiffs = (Math.abs(diff.x), Math.abs(diff.y))
+    val diff = to - from
 
-    absDiffs match {
+    diff.abs match {
       case (0, 0) => (t: Position) => to
       case (x, 0) => (t: Position) => (t.x + diff.x / x, t.y)
       case (0, y) => (t: Position) => (t.x, t.y + diff.y / y)

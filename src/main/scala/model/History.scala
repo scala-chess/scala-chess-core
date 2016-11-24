@@ -49,7 +49,7 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
 
   def all: Seq[(Position, Piece)] =
     actions.flattenTo(classOf[PutInitial]) map {
-      case a: PutInitial => a.piece
+      a: PutInitial => a.piece
     } flatMap {
       piece =>
         positionOf(piece) map {
@@ -73,7 +73,7 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     config collectFirst {
       case boardSize: BoardSize => boardSize
     } exists {
-      boardSize => pos.x >= 0 && pos.y >= 0 && pos.x < boardSize.x && pos.y < boardSize.y
+      boardSize => (0 until boardSize.x).contains(pos.x) && (0 until boardSize.y).contains(pos.y)
     }
 
   //  TODO add config to set

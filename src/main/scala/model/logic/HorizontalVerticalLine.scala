@@ -5,6 +5,7 @@ import model.SeqExtensions._
 import model.TupleUtils._
 import model.logic.modifier.IsOnBoard
 import model.{ActionFactory, History, Pattern}
+import model.Pieces._
 
 class HorizontalVerticalLine(val maxSteps: Option[Int] = None) extends HorizontalVerticalLineMixin with IsOnBoard
 
@@ -26,7 +27,7 @@ trait HorizontalVerticalLineMixin extends Logic {
         } filter {
           target =>
             history.pieceAt(target) forall {
-              targetPiece => targetPiece.color != piece.color
+              targetPiece => piece.isEnemy(targetPiece)
             }
         } map {
           target => ActionFactory.move(piece.id, field, target, history)

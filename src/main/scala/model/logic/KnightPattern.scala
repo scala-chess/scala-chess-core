@@ -1,14 +1,15 @@
 package model.logic
 
-import chess.api.Action
+import chess.api.{Action, Position}
 import model.TupleUtils._
 import model.logic.modifier.IsOnBoard
 import model.{ActionFactory, History}
+import model.Pieces._
 
 class KnightPattern extends KnightPatternMixin with IsOnBoard
 
 trait KnightPatternMixin extends Logic {
-  override def getActions(field: (Int, Int), history: History): Seq[Action] =
+  override def getActions(field: Position, history: History): Seq[Action] =
     history.pieceAt(field) map {
       piece =>
         Seq(
@@ -22,7 +23,7 @@ trait KnightPatternMixin extends Logic {
           field.down.down.right
         ) filter {
           target => history.pieceAt(target) forall {
-            targetPiece => targetPiece.color != piece.color
+            targetPiece => piece.isEnemy(targetPiece)
           }
         } map {
           target => ActionFactory.move(piece.id, field, target, history)

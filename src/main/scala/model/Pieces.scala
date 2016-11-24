@@ -25,6 +25,11 @@ object Pieces {
       case _: Knight =>
         new KnightPattern :: List()
     }
+
+  implicit class LogicPiece(piece: Piece) {
+    def isAlly(other: Piece) = piece.color == other.color
+    def isEnemy(other: Piece) = !isAlly(other)
+  }
 }
 
 object King {

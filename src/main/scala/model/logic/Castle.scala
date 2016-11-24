@@ -4,6 +4,7 @@ import chess.api.{Action, Direction, Position}
 import model.TupleUtils._
 import model.logic.modifier.EmptyBetween
 import model.{ActionFactory, History, Pattern}
+import model.Pieces._
 
 class Castle extends CastleMixin with EmptyBetween
 
@@ -12,7 +13,7 @@ trait CastleMixin extends Logic {
     history.pieceAt(field) map {
       piece =>
         history.all flatMap {
-          case ((x, y), rook@chess.api.Rook(color, id)) if color == piece.color && history.unmoved(rook) && y == field.y => Some(((x, y), id))
+          case ((x, y), rook@chess.api.Rook(color, id)) if piece.isAlly(rook) && history.unmoved(rook) && field.isSameColumn(y) => Some(((x, y), id))
           case _ => None
         } map {
           rookPosId => (rookPosId, Pattern.direction(field, rookPosId._1))
