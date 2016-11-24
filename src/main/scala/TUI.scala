@@ -20,7 +20,7 @@ class TUI(val chessController: ActorRef) extends Actor {
     case u@Update(chessBoard) => update(chessBoard.pieces)
   }
 
-  def update(board: Seq[(Position, Piece)]): Unit = {
+  def update(board: Iterable[(Position, Piece)]): Unit = {
     printBoard(board)
     var validActions: Seq[Action] = Seq()
     var selectedIndex = -1
@@ -52,7 +52,7 @@ class TUI(val chessController: ActorRef) extends Actor {
     chessController ! validActions(selectedIndex)
   }
 
-  def printBoard(board: Seq[(Position, Piece)]) = {
+  def printBoard(board: Iterable[(Position, Piece)]) = {
     for (i <- 0 to 7) {
       for (j <- 0 to 7) {
         val letter = board find {
