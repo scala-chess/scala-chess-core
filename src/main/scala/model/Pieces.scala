@@ -1,28 +1,28 @@
 package model
 
-import chess.api.{Bishop, Color, King, Knight, Move, MoveAndReplace, Pawn, Piece, Queen, Rook}
+import chess.api.{Color, Piece}
 import model.logic._
 import model.logic.modifier._
 import model.logic.modifier.conditionalMapper.MoveReplaceMapper
 
 object Pieces {
   def getLogic(piece: Piece): Seq[Logic] =
-    piece match {
-      case _: Rook =>
+    piece.name match {
+      case ROOK =>
         new HorizontalVerticalLine() :: List()
-      case _: King =>
+      case KING =>
         new HorizontalVerticalLine() ::
           new DiagonalLine() :: new Castle with Unmoved :: List()
-      case _: Queen =>
+      case QUEEN =>
         new HorizontalVerticalLine() ::
           new DiagonalLine() :: List()
-      case _: Bishop =>
+      case BISHOP =>
         new DiagonalLine() :: List()
-      case _: Pawn =>
+      case PAWN =>
         new StraightStep() with TargetEmpty with MoveReplaceMapper ::
           new StraightStep(Some(2)) with TargetEmpty with Unmoved with MoveReplaceMapper ::
           new StraightDiagonalStep() with TargetOccupied with MoveReplaceMapper :: List()
-      case _: Knight =>
+      case KNIGHT =>
         new KnightPattern :: List()
     }
 
@@ -30,28 +30,22 @@ object Pieces {
     def isAlly(other: Piece) = piece.color == other.color
     def isEnemy(other: Piece) = !isAlly(other)
   }
-}
 
-object King {
-  def apply(color: Color.Value) = new King(color, Id.next)
-}
+  val ROOK = "rook"
+  val KING = "king"
+  val QUEEN = "queen"
+  val BISHOP = "bishop"
+  val KNIGHT = "knight"
+  val PAWN = "pawn"
 
-object Queen {
-  def apply(color: Color.Value) = new Queen(color, Id.next)
-}
+  def createPiece(color: Color.Value, name: String) = Piece(color, name, Id.next)
+  def rook(color: Color.Value) = createPiece(color, ROOK)
+  def king(color: Color.Value) = createPiece(color, KING)
+  def queen(color: Color.Value) = createPiece(color, QUEEN)
+  def bishop(color: Color.Value) = createPiece(color, BISHOP)
+  def knight(color: Color.Value) = createPiece(color, KNIGHT)
+  def pawn(color: Color.Value) = createPiece(color, PAWN)
 
-object Rook {
-  def apply(color: Color.Value) = new Rook(color, Id.next)
-}
-
-object Pawn {
-  def apply(color: Color.Value) = new Pawn(color, Id.next)
-}
-
-object Knight {
-  def apply(color: Color.Value) = new Knight(color, Id.next)
-}
-
-object Bishop {
-  def apply(color: Color.Value) = new Bishop(color, Id.next)
+  val black: Color.Value = Color.Black
+  val white: Color.Value = Color.White
 }

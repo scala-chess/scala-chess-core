@@ -1,6 +1,5 @@
 package model
 
-import chess.api.MoveAndReplaceChoice.MoveAndReplaceChoice
 import chess.api._
 
 
@@ -28,7 +27,7 @@ object ActionFactory {
       PutInitial(target, piece)
     )
 
-  def moveAndReplace(pieceId: Int, origin: Position, target: Position, piece: Piece, choice: MoveAndReplaceChoice, history: History): MoveAndReplace =
+  def moveAndReplace(pieceId: Int, origin: Position, target: Position, piece: Piece, choice: String, history: History): MoveAndReplace =
     MoveAndReplace(
       pieceId,
       move(pieceId, origin, target, history),
@@ -36,7 +35,7 @@ object ActionFactory {
       choice
     )
 
-  def moveAndReplace(move: Move, choice: MoveAndReplaceChoice, piece: Piece): MoveAndReplace =
+  def moveAndReplace(move: Move, choice: String, piece: Piece): MoveAndReplace =
     MoveAndReplace(
       move.pieceId,
       move,

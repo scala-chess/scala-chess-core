@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit
 import akka.actor._
 import akka.pattern.ask
 import chess.api._
+import model.Pieces._
 import chess.api.actors.RegisterObserver
 
 import scala.concurrent.Await
@@ -43,7 +44,8 @@ class TUI(val chessController: ActorRef) extends Actor {
       }
       println("Choose Action:")
       validActions.zipWithIndex.foreach {
-        case (action: Choice, index) => println(index.toString + ": " + action.getClass.getSimpleName + " to " + action.target + " - " + action.choice.getClass.getSimpleName)
+        // todo what to do here?
+        //case (action: Choice, index) => println(index.toString + ": " + action.getClass.getSimpleName + " to " + action.target + " - " + action.choice.getClass.getSimpleName)
         case (action, index) => println(index.toString + ": " + action.getClass.getSimpleName + " to " + action.target)
       }
       selectedIndex = StdIn.readInt()
@@ -60,15 +62,18 @@ class TUI(val chessController: ActorRef) extends Actor {
         } map {
           t => t._2
         } match {
-          case None => "_"
-          case Some(piece) => piece match {
-            case k: King => inColor(k, "K")
-            case k: Knight => inColor(k, "k")
-            case r: Rook => inColor(r, "R")
-            case b: Bishop => inColor(b, "B")
-            case q: Queen => inColor(q, "Q")
-            case p: Pawn => inColor(p, "P")
+          case Some(piece) => piece.name match {
+            case KING => inColor(piece, "K")
+            case KNIGHT => inColor(piece, "k")
+            case ROOK => inColor(piece, "R")
+            case BISHOP => inColor(piece, "B")
+            case QUEEN => inColor(piece, "Q")
+            case PAWN => inColor(piece, "P")
+            case _ =>
+              println(piece.name)
+              "?"
           }
+          case None => "_"
         }
         print("|" + letter)
       }

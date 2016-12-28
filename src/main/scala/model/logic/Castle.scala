@@ -1,6 +1,6 @@
 package model.logic
 
-import chess.api.{Action, Direction, Position}
+import chess.api.{Action, Direction, Piece, Position}
 import model.TupleUtils._
 import model.logic.modifier.EmptyBetween
 import model.{ActionFactory, History, Pattern}
@@ -13,7 +13,7 @@ trait CastleMixin extends Logic {
     history.pieceAt(field) map {
       piece =>
         history.all flatMap {
-          case (pos, rook@chess.api.Rook(color, id)) if piece.isAlly(rook) && history.unmoved(rook) && field.isSameColumn(pos) => Some((pos, id))
+          case (pos, rook@Piece(_, ROOK, id)) if piece.isAlly(rook) && history.unmoved(rook) && field.isSameColumn(pos) => Some((pos, id))
           case _ => None
         } map {
           rookPosId => (rookPosId, Pattern.direction(field, rookPosId._1))

@@ -2,6 +2,7 @@ package model
 
 import chess.api._
 import org.specs2._
+import model.Pieces._
 
 class PieceSpec extends Specification { def is = s2"""
 
@@ -9,6 +10,6 @@ class PieceSpec extends Specification { def is = s2"""
     1. have a color         $color
                           """
 
-  def color = model.King(Color.White).color must_==Color.White
+  def color = king(white).color must_==Color.White
 
 }
