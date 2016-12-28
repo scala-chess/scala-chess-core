@@ -41,13 +41,13 @@ class PositionTupleSpec extends Specification {
 
   def straight = (0, 0).straight(pawn(black)) must_==(0, 1)
 
-  def sameRow = (0, 2).isSameRow((0, 1)) must_== (true)
+  def sameRow = (0, 2).isSameRow((0, 1)) must_== true
 
-  def sameColumn = (0, 1).isSameColumn((1, 1)) must_== (true)
+  def sameColumn = (0, 1).isSameColumn((1, 1)) must_== true
 
-  def x = (0, 1).x must_== (0)
+  def x = (0, 1).x must_== 0
 
-  def y = (0, 1).y must_== (1)
+  def y = (0, 1).y must_== 1
 
   def sub = (2, 1) - (1, 1) must_==(1, 0)
 
