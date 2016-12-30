@@ -57,6 +57,8 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
         }
     }
 
+  def pieces: Seq[Piece] = all.map(_._2)
+
   def boardSize: (Int, Int) =
     config.reverse collectFirst {
       case boardSize: BoardSize => boardSize
@@ -93,5 +95,12 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
 
   def :+(historyItem: Either[Action, Config]): History =
     new History(history :+ historyItem)
+
+  def getWinner: Option[Color.Value] = {
+    pieces.filter(_.name == Pieces.KING) match {
+      case Seq(king) => Some(king.color)
+      case _ => None
+    }
+  }
 
 }

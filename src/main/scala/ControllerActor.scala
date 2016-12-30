@@ -12,7 +12,7 @@ class ControllerActor extends Actor {
     case UnregisterObserver => observers -= sender()
     case QueryValidActions(pos: Position) => sender() ! game.getValidActions(pos)
     case action: Action => game.execIfValid(action) match {
-      case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard))
+      case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard, game.getWinner))
       case Left(error) => sender() ! InvalidAction(error, action)
     }
   }

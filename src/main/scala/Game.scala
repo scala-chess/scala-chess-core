@@ -9,12 +9,15 @@ class Game {
   var history: History = new History(ChessBoard.init)
 
   def getValidActions(origin: (Int, Int)): Seq[Action] = {
-    history.pieceAt(origin) match {
-      case Some(piece) if !history.getPieceColorOfLastAction.contains(piece.color) =>
-        Pieces.getLogic(piece) flatMap {
+    if (history.getWinner.isDefined) Seq()
+    else {
+      history.pieceAt(origin) match {
+        case Some(piece) if !history.getPieceColorOfLastAction.contains(piece.color) =>
+          Pieces.getLogic(piece) flatMap {
             logic => Logic.getActions(Seq(logic), origin, history)
           }
-      case _ => Seq()
+        case _ => Seq()
+      }
     }
   }
 
@@ -36,5 +39,7 @@ class Game {
     val boardSize = history.boardSize
     chess.api.ChessBoard(boardSize.x, boardSize.y, history.all)
   }
+
+  def getWinner: Option[Color.Value] = history.getWinner
 }
 
