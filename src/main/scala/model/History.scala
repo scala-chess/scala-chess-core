@@ -79,6 +79,18 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
   //  TODO add config to set
   def triggerPositions(pieceId: Int): Seq[Position] = Seq()
 
+  def getPieceColorOfLastAction: Option[Color.Value] =
+    actions flatMap {
+      case _: PutInitial => None
+      case other => Some(other)
+    } lastOption match {
+      case Some(action) => pieceAt(action.target) match {
+        case Some(piece) => Some(piece.color)
+        case _ => None
+      }
+      case _ => None
+    }
+
   def :+(historyItem: Either[Action, Config]): History =
     new History(history :+ historyItem)
 

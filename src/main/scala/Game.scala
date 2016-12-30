@@ -9,13 +9,13 @@ class Game {
   var history: History = new History(ChessBoard.init)
 
   def getValidActions(origin: (Int, Int)): Seq[Action] = {
-    val res = history.pieceAt(origin) map {
-      piece => Pieces.getLogic(piece)
-    } map {
-      Logic.getActions(_, origin, history)
-    } getOrElse Seq()
-
-    res
+    history.pieceAt(origin) match {
+      case Some(piece) if !history.getPieceColorOfLastAction.contains(piece.color) =>
+        Pieces.getLogic(piece) flatMap {
+            logic => Logic.getActions(Seq(logic), origin, history)
+          }
+      case _ => Seq()
+    }
   }
 
   def execIfValid(action: Action): Either[String, chess.api.ChessBoard] = {
