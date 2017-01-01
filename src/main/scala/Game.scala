@@ -11,13 +11,16 @@ class Game {
   var history: History = new History(ChessBoard.init)
 
   def getValidActions(origin: (Int, Int)): Seq[Action] = {
-    val res = history.pieceAt(origin) map {
-      piece => Pieces.getLogic(piece)
-    } map {
-      Logic.getActions(_, origin, history)
-    } getOrElse Seq()
-
-    res
+    if (history.getWinner.isDefined) Seq()
+    else {
+      history.pieceAt(origin) match {
+        case Some(piece) if !history.getPieceColorOfLastAction.contains(piece.color) =>
+          Pieces.getLogic(piece) flatMap {
+            logic => Logic.getActions(Seq(logic), origin, history)
+          }
+        case _ => Seq()
+      }
+    }
   }
 
   def execAtIfValid(origin: Position, index: Int): Either[String, chess.api.ChessBoard] =
@@ -48,5 +51,7 @@ class Game {
     val boardSize = history.boardSize
     chess.api.ChessBoard(boardSize.x, boardSize.y, history.all)
   }
+
+  def getWinner: Option[Color.Value] = history.getWinner
 }
 

@@ -2,7 +2,7 @@ import akka.actor.{ActorSystem, Props}
 import akka.pattern.AskSupport
 import com.typesafe.config.ConfigFactory
 
-object Chess {
+object Application {
 
   def main(args: Array[String]): Unit = {
     val (actorSystemName, actorName) = getActorSystemConfig

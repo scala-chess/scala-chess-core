@@ -8,7 +8,7 @@ class ControllerActor extends Actor {
   val game = new Game()
 
   override def receive = {
-    case RegisterObserver => observers += sender(); sender() ! Update(game.toApiChessBoard)
+    case RegisterObserver => observers += sender(); sender() ! Update(game.toApiChessBoard, game.getWinner)
     case UnregisterObserver => observers -= sender()
     case QueryValidActions(origin: Position) => sender() ! game.getValidActions(origin)
     case ExecuteAction(position: Position, index: Int) => afterExec(game.execAtIfValid(position, index))
@@ -19,6 +19,7 @@ class ControllerActor extends Actor {
   result match {
     case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard))
     case Left(error) => sender() ! InvalidAction(error)
+
   }
 
 }

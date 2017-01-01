@@ -11,8 +11,8 @@ object Pieces {
       case ROOK =>
         new HorizontalVerticalLine() :: List()
       case KING =>
-        new HorizontalVerticalLine() ::
-          new DiagonalLine() :: new Castle with Unmoved :: List()
+        new HorizontalVerticalLine(maxSteps=Some(1)) ::
+          new DiagonalLine(maxSteps=Some(1)) :: new Castle with Unmoved :: List()
       case QUEEN =>
         new HorizontalVerticalLine() ::
           new DiagonalLine() :: List()
