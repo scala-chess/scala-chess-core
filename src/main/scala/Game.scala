@@ -4,6 +4,8 @@ import model.TupleUtils._
 import model._
 import model.logic.Logic
 
+import scala.util.{Failure, Success, Try}
+
 class Game {
 
   var history: History = new History(ChessBoard.init)
@@ -18,8 +20,18 @@ class Game {
     res
   }
 
+  def execAtIfValid(origin: Position, index: Int): Either[String, chess.api.ChessBoard] =
+    Try(getValidActions(origin)(index)) match {
+      case Success(action) =>
+        history = history :+ Left(action)
+        Right(toApiChessBoard)
+      case Failure(f) =>
+        Left("illegal action cannot be executed")
+    }
+
+
   def execIfValid(action: Action): Either[String, chess.api.ChessBoard] = {
-    history.positionOf(action.pieceId) map {
+    history.positionOf(action.pieceId) flatMap  {
       origin =>
         getValidActions(origin) collectFirst {
           case a: Action if a == action => a
@@ -28,7 +40,7 @@ class Game {
             history = history :+ Left(validAction)
             Right(toApiChessBoard)
           }
-        } getOrElse Left("illegal action cannot be executed")
+        }
     } getOrElse Left("illegal action cannot be executed")
   }
 

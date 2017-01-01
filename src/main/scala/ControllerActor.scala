@@ -10,11 +10,15 @@ class ControllerActor extends Actor {
   override def receive = {
     case RegisterObserver => observers += sender(); sender() ! Update(game.toApiChessBoard)
     case UnregisterObserver => observers -= sender()
-    case QueryValidActions(pos: Position) => sender() ! game.getValidActions(pos)
-    case action: Action => game.execIfValid(action) match {
-      case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard))
-      case Left(error) => sender() ! InvalidAction(error, action)
-    }
+    case QueryValidActions(origin: Position) => sender() ! game.getValidActions(origin)
+    case ExecuteAction(position: Position, index: Int) => afterExec(game.execAtIfValid(position, index))
+    case action: Action => afterExec(game.execIfValid(action))
+  }
+
+  def afterExec(result: Either[String, chess.api.ChessBoard]) =
+  result match {
+    case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard))
+    case Left(error) => sender() ! InvalidAction(error)
   }
 
 }
