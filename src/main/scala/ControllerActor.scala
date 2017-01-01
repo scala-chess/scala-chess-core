@@ -17,7 +17,7 @@ class ControllerActor extends Actor {
 
   def afterExec(result: Either[String, chess.api.ChessBoard]) =
   result match {
-    case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard))
+    case Right(chessBoard) => observers.foreach(_ ! Update(chessBoard, game.getWinner))
     case Left(error) => sender() ! InvalidAction(error)
 
   }
