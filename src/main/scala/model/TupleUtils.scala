@@ -23,9 +23,9 @@ object TupleUtils {
 
     def +(other: Position) = (t._1 + other._1, t._2 + other._2)
 
-    def isSameRow(other: (Int, Int)) = t._1 == other._1
+    def isSameColumn(other: (Int, Int)) = t._1 == other._1
 
-    def isSameColumn(other: (Int, Int)) = t._2 == other._2
+    def isSameRow(other: (Int, Int)) = t._2 == other._2
 
 //    TODO this seems wrong here
     def straight(piece: Piece) =
