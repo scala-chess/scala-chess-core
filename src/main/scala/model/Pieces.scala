@@ -27,9 +27,9 @@ object Pieces {
       )
 
       case PAWN => List(
-        new Step(directions = vertical) with TargetEmpty with Forward with ToMove,
-        new Step(directions = vertical, Some(2)) with TargetEmpty with Forward with Unmoved with ToMove,
-        new Step(directions = diagonal) with TargetEnemy with Forward with ToMove
+        new Step(directions = vertical) with TargetEmpty with Forward with ToMoveOrReplace,
+        new Step(directions = vertical, Some(2)) with TargetEmpty with Forward with Unmoved with ToMoveOrReplace,
+        new Step(directions = diagonal) with TargetEnemy with Forward with ToMoveOrReplace
       )
 
       case KNIGHT => List(

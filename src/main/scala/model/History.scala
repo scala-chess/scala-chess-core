@@ -78,7 +78,7 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
       boardSize => (0 until boardSize.x).contains(pos.x) && (0 until boardSize.y).contains(pos.y)
     }
 
-  def triggerPositions(pieceId: Int): Seq[Position] = {
+  def triggerPositions(pieceType: String): Seq[Position] = {
     val size = boardSize
     val numberOfColumns = size._1
     val indexOfFirstRow = 0
