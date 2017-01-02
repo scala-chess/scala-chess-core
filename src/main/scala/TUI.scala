@@ -18,7 +18,7 @@ class TUI(val chessController: ActorRef) extends Actor {
 
 
   override def receive = {
-    case u@Update(chessBoard) => update(chessBoard.pieces)
+    case u@Update(chessBoard, winner) => update(chessBoard.pieces)
   }
 
   def update(board: Iterable[(Position, Piece)]): Unit = {
