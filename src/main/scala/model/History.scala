@@ -78,8 +78,16 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
       boardSize => (0 until boardSize.x).contains(pos.x) && (0 until boardSize.y).contains(pos.y)
     }
 
-  //  TODO add config to set
-  def triggerPositions(pieceId: Int): Seq[Position] = Seq()
+  def triggerPositions(pieceId: Int): Seq[Position] = {
+    val size = boardSize
+    val numberOfColumns = size._1
+    val indexOfFirstRow = 0
+    val indexOfLastRow = size._2 - 1
+    val columns = 0 until numberOfColumns
+    columns flatMap { columnIndex =>
+      Seq((columnIndex, indexOfFirstRow), (columnIndex, indexOfLastRow))
+    }
+  }
 
   def getPieceColorOfLastAction: Option[Color.Value] = {
     val pieces = actions flattenTo (classOf[PutInitial]) map {
