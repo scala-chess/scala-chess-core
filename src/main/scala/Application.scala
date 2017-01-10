@@ -1,6 +1,8 @@
 import akka.actor.{ActorSystem, Props}
-import akka.pattern.AskSupport
 import com.typesafe.config.ConfigFactory
+
+import scala.io.StdIn
+import scala.util.Try
 
 object Application {
 
@@ -8,7 +10,12 @@ object Application {
     val (actorSystemName, actorName) = getActorSystemConfig
     val actorSystem = ActorSystem.create(actorSystemName)
     val controller = actorSystem.actorOf(Props[ControllerActor], actorName)
-    actorSystem.actorOf(Props(new TUI(controller)))
+
+    val tui = actorSystem.actorOf(Props(new TUI(controller)))
+
+    while (true) {
+      Try(StdIn.readInt()) map (tui.tell(_, null))
+    }
   }
 
   def getActorSystemConfig = {
