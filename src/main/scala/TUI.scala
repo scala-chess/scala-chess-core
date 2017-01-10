@@ -74,10 +74,8 @@ class TUI(val chessController: ActorRef) extends Actor {
     for (i <- 0 to 7) {
       for (j <- 0 to 7) {
 
-        val letter = board find {
-          posPiece => posPiece._1 == (j, i)
-        } map {
-          posPiece => posPiece._2
+        val letter = board collectFirst  {
+          case ((`j`, `i`), piece) => piece
         } match {
           case Some(piece) => piece.name match {
             case KING => inColor(piece, "K")
