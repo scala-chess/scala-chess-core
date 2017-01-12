@@ -34,7 +34,7 @@ class Game {
 
 
   def execIfValid(action: Action): Either[String, chess.api.ChessBoard] = {
-    history.positionOf(action.pieceId) flatMap  {
+    history.positionOf(action.pieceId) flatMap {
       origin =>
         getValidActions(origin) collectFirst {
           case a: Action if a == action => a

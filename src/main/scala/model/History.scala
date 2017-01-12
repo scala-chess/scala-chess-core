@@ -24,14 +24,13 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     actions.flattenToReversed(classOf[Put], classOf[Remove], classOf[PutInitial]) find {
       _.target == pos
     } flatMap {
-      case remove: Remove => None
+      case _: Remove => None
       case putInit: PutInitial => Some(putInit.piece)
       case put: Put =>
-        actions.find {
-          case a: PutInitial => a.pieceId == put.pieceId
-          case _ => false
+        actions.flattenTo(classOf[PutInitial]).find {
+          _.pieceId == put.pieceId
         } map {
-          case a: PutInitial => a.piece
+          _.piece
         }
     }
 
