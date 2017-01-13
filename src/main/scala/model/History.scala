@@ -103,11 +103,15 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
   def :+(historyItem: Either[Action, Config]): History =
     new History(history :+ historyItem)
 
-  def getWinner: Option[Color.Value] = {
+  def getWinner: Option[Color.Value] =
     pieces.filter(_.name == Pieces.KING) match {
       case Seq(king) => Some(king.color)
       case _ => None
     }
-  }
 
+
+}
+
+object History {
+  def apply(startConfig: Seq[Either[Action, Config]]) = new History(startConfig)
 }

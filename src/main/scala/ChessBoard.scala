@@ -2,7 +2,7 @@ import chess.api._
 import model.Pieces._
 
 object ChessBoard {
-  def init: List[Either[Action, Config]] =
+  def apply(): List[Either[Action, Config]] =
     Right(BoardSize(8, 8)) :: (actions map { action => Left(action) })
 
   val actions =
@@ -38,5 +38,7 @@ object ChessBoard {
       PutInitial((4, 6), pawn(white)),
       PutInitial((5, 6), pawn(white)),
       PutInitial((6, 6), pawn(white)),
-      PutInitial((7, 6), pawn(white)))
+      PutInitial((7, 6), pawn(white))
+    )
+
 }

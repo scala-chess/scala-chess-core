@@ -8,7 +8,7 @@ import scala.util.{Failure, Success, Try}
 
 class Game {
 
-  var history: History = new History(ChessBoard.init)
+  var history: History = History(ChessBoard())
 
   def getValidActions(origin: (Int, Int)): Seq[Action] = {
     if (history.getWinner.isDefined) Seq()

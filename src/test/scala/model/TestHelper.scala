@@ -1,4 +1,4 @@
-package model.pieces
+package model
 
 object TestHelper {
 

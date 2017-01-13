@@ -1,13 +1,9 @@
-package model.pieces
+package model
 
 import chess.api._
-import model.History
 import model.Pieces._
 import org.specs2.Specification
 
-/**
-  * Created by andy on 18.11.2016.
-  */
 class HistorySpec extends Specification {
   def is =
     s2"""
