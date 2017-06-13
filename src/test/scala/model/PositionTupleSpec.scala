@@ -1,9 +1,9 @@
 package model
 
-import chess.api.{Color, Piece}
 import model.TupleUtils._
 import org.specs2.Specification
-import model.Pieces._
+import model.default.DefaultPieces._
+import model.util.Colors._
 
 class PositionTupleSpec extends Specification {
   def is =
@@ -39,7 +39,7 @@ class PositionTupleSpec extends Specification {
 
   def down = (0, 0).down must_==(0, 1)
 
-  def straight = (0, 0).straight(pawn(black)) must_==(0, 1)
+  def straight = (0, 0).straight(__PAWN(black)) must_==(0, 1)
 
   def sameRow = (0, 2).isSameColumn((0, 1)) must_== true
 

@@ -3,14 +3,15 @@ package model
 import chess.api._
 import model.SeqExtensions._
 import model.TupleUtils._
+import model.config.Pieces
 
 class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable[Either[Action, Config]] {
 
   override def iterator: Iterator[Either[Action, Config]] = history.iterator
 
-  def actions = history collect { case Left(action) => action }
+  def actions: Seq[Action] = history collect { case Left(action) => action }
 
-  def config = history collect { case Right(config) => config }
+  def config: Seq[Config] = history collect { case Right(config) => config }
 
   def unmoved(piece: Piece): Boolean = {
     !(actions exists {
@@ -41,7 +42,7 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     actions.flattenToReversed(classOf[Put], classOf[Remove], classOf[PutInitial]) find {
       _.pieceId == pieceId
     } flatMap {
-      case remove: Remove => None
+      case _: Remove => None
       case putInit: PutInitial => Some(putInit.target)
       case put: Put => Some(put.target)
     }
@@ -89,12 +90,12 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
   }
 
   def getPieceColorOfLastAction: Option[Color.Value] = {
-    val pieces = actions flattenTo (classOf[PutInitial]) map {
+    val pieces = actions flattenTo classOf[PutInitial] map {
       _.piece
     }
 
     actions.lastOption match {
-      case Some(p: PutInitial) => None
+      case Some(_: PutInitial) => None
       case Some(a) => pieces.find { p => a.pieceId == p.id } map { p => p.color }
       case None => None
     }
@@ -104,7 +105,7 @@ class History(val history: Seq[Either[Action, Config]] = Seq()) extends Iterable
     new History(history :+ historyItem)
 
   def getWinner: Option[Color.Value] =
-    pieces.filter(_.name == Pieces.KING) match {
+    pieces.filter(_.name == Pieces.hero.name) match {
       case Seq(king) => Some(king.color)
       case _ => None
     }

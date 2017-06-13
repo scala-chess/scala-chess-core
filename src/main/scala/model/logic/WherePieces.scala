@@ -2,7 +2,7 @@ package model.logic
 
 import chess.api.{Action, Position}
 import model.History
-import model.Pieces._
+import model.PieceUtil._
 import model.logic.modifier.IsOnBoard
 
 class WherePieces(val pieceRestriction: Seq[String] = Seq.empty, val ally: Boolean = true, val enemy: Boolean = true) extends WherePiecesMixin with IsOnBoard

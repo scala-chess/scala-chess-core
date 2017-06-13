@@ -1,7 +1,9 @@
 package model
 
 import chess.api._
-import model.Pieces._
+import model.default.DefaultPieces._
+import model.util.Colors._
+
 
 object TestBoard {
   def apply(): List[Either[Action, Config]] =
@@ -9,8 +11,8 @@ object TestBoard {
 
   val actions =
     List(
-      PutInitial((5, 3), rook(black)),
-      PutInitial((1, 3), pawn(white)),
-      PutInitial((5, 6), pawn(white))
+      PutInitial((5, 3), __ROOK(black)),
+      PutInitial((1, 3), __PAWN(white)),
+      PutInitial((5, 6), __PAWN(white))
     )
 }

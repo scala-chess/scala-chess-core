@@ -1,10 +1,7 @@
 package model.logic
 
-import chess.api.{Action, Direction, Piece, Position}
-import model.TupleUtils._
-import model.logic.modifier.EmptyBetween
+import chess.api.{Action, Position}
 import model.{ActionFactory, History, Pattern}
-import model.Pieces._
 
 trait ToCastle extends Logic {
   override def getActions(field: Position, history: History): Seq[Action] = {

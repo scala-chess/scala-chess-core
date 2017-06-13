@@ -2,7 +2,6 @@ package model.logic.modifier
 
 import chess.api.Action
 import model.History
-import model.Pieces.LogicPiece
 import model.logic.Logic
 
 trait TargetUnmoved extends Logic {

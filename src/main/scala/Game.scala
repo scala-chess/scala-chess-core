@@ -8,14 +8,14 @@ import scala.util.{Failure, Success, Try}
 
 class Game {
 
-  var history: History = History(ChessBoard())
+  var history: History = History(config.Board())
 
   def getValidActions(origin: (Int, Int)): Seq[Action] = {
     if (history.getWinner.isDefined) Seq()
     else {
       history.pieceAt(origin) match {
         case Some(piece) if !history.getPieceColorOfLastAction.contains(piece.color) =>
-          Pieces.getLogic(piece) flatMap {
+          PieceUtil.getLogic(piece) flatMap {
             logic => Logic.getActions(Seq(logic), origin, history)
           }
         case _ => Seq()

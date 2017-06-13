@@ -17,4 +17,5 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" % "akka-remote_2.11" % "2.4.12"
 )
 
+
 scalacOptions in Test ++= Seq("-Yrangepos")

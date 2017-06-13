@@ -1,10 +1,8 @@
 package model.logic
 
 import chess.api.{Action, Direction, Position}
-import model.TupleUtils._
 import model.logic.modifier.{EmptyBetween, IsOnBoard}
-import model.{ActionFactory, History, Pattern}
-import model.Pieces._
+import model.{History, Pattern}
 
 class Step(val directions: Seq[Direction], val step: Option[Int] = None) extends StepMixin with EmptyBetween with IsOnBoard
 

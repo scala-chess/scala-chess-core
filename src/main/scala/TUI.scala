@@ -5,7 +5,7 @@ import akka.actor._
 import akka.pattern.ask
 import chess.api._
 import chess.api.actors.RegisterObserver
-import model.Pieces._
+import model.config.Pieces
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -77,17 +77,7 @@ class TUI(val chessController: ActorRef) extends Actor {
         val letter = board collectFirst {
           case ((`j`, `i`), piece) => piece
         } match {
-          case Some(piece) => piece.name match {
-            case KING => inColor(piece, "K")
-            case KNIGHT => inColor(piece, "k")
-            case ROOK => inColor(piece, "R")
-            case BISHOP => inColor(piece, "B")
-            case QUEEN => inColor(piece, "Q")
-            case PAWN => inColor(piece, "P")
-            case _ =>
-              println(piece.name)
-              "?"
-          }
+          case Some(piece) => inColor(piece)
           case None => "_"
         }
         print("|" + letter)
@@ -97,10 +87,10 @@ class TUI(val chessController: ActorRef) extends Actor {
     println("")
   }
 
-  def inColor(piece: Piece, letter: String): String =
+  def inColor(piece: Piece): String =
     piece.color match {
-      case Color.Black => Console.BLUE + letter + Console.BLACK
-      case Color.White => Console.RED + letter + Console.BLACK
+      case Color.Black => Console.BLUE + Pieces.getByName(piece.name).id + Console.BLACK
+      case Color.White => Console.RED + Pieces.getByName(piece.name).id + Console.BLACK
     }
 
 }
