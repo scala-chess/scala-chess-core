@@ -28,7 +28,7 @@ class TUI(val chessController: ActorRef) extends Actor {
 
   override def receive = {
     case u@Update(chessBoard, winner) =>
-      printBoard(chessBoard.pieces)
+      printBoard(chessBoard.pieces, chessBoard.dimX, chessBoard.dimY)
       state = changeState(WaitForX())
 
     case input: Int => state match {
@@ -69,10 +69,10 @@ class TUI(val chessController: ActorRef) extends Actor {
   }
 
 
-  def printBoard(board: Iterable[(Position, Piece)]) = {
+  def printBoard(board: Iterable[(Position, Piece)], x: Int, y: Int) = {
     println
-    for (i <- 0 to 7) {
-      for (j <- 0 to 7) {
+    for (i <- 0 to y - 1) {
+      for (j <- 0 to x - 1) {
 
         val letter = board collectFirst {
           case ((`j`, `i`), piece) => piece
